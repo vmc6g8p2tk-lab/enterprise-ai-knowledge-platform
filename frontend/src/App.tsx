@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const API = import.meta.env.VITE_API_BASE ?? 'http://localhost:8080'
+const API = import.meta.env.VITE_API_BASE ?? 'http://localhost:18080'
 type KB = { id: string; name: string; description: string }
 type Doc = { id: string; original_filename: string; status: string; chunk_count: number; failure_reason: string }
 type Citation = { document_id: string; document_name: string; chunk_id: number; chunk_index: number; content: string }

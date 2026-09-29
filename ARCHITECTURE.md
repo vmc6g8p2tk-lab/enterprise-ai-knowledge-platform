@@ -22,7 +22,7 @@ flowchart LR
 - **Go API:** public knowledge base and document endpoints, upload validation, metadata persistence, forwarding RAG requests, migration on startup. SQL parameters prevent injection. The default CORS origin is the local frontend.
 - **Python AI service:** file parsing, whitespace cleaning, paragraph-aware chunks with overlap, embeddings, pgvector search, reranking, context assembly, answer generation and server-built citations. Only Docker-internal endpoints are exposed.
 - **PostgreSQL/pgvector:** durable metadata and vector rows. A regular SQL migration creates the extension and tables. Each chunk has its parent document, ordered index, content, JSON metadata and 1536-dimensional vector.
-- **Docker volume:** retains original uploads so processing survives request completion. The AI service mounts this volume read-only.
+- **Docker volume:** retains original uploads so processing survives request completion. The Go and Python containers use a shared UID/GID (10001); Go writes files as `0640`, and Python mounts the volume read-only. The local host API port is 18080 to coexist with another project.
 - **React:** small UI for creating/selecting knowledge bases, uploading documents, seeing status, asking questions and seeing citations.
 
 ## Ingestion flow

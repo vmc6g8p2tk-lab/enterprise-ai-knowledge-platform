@@ -6,6 +6,7 @@ from reportlab.pdfgen.canvas import Canvas
 from app.chunking import chunk_text
 from app.parsing import extract_text
 from app.providers import ExtractiveAnswer, HashEmbedding
+from app.reranking import LexicalReranker
 
 
 def test_parse_txt_markdown_docx_pdf(tmp_path: Path):
@@ -40,3 +41,11 @@ def test_dev_providers_are_deterministic_and_grounded():
     assert "ten days" in answer and indices == [0]
     answer, indices = ExtractiveAnswer().answer("quantum entanglement", [{"content": "The vacation policy grants ten days."}])
     assert "资料不足" in answer and indices == []
+
+
+def test_reranker_interface_orders_lexical_match():
+    rows = [{"content": "vacation policy grants leave", "distance": 0.4},
+            {"content": "security key rotation", "distance": 0.1}]
+    ranked = LexicalReranker().rerank("vacation leave", rows, 2)
+    assert ranked[0]["content"].startswith("vacation")
+    assert ranked[0]["rerank_score"] > ranked[1]["rerank_score"]

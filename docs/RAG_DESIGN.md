@@ -14,7 +14,7 @@ The query embedding is passed as a parameter to PostgreSQL and cast to `vector`.
 
 ## Rerank
 
-`rerank(question, candidates)` is a replaceable boundary. The first implementation combines question/content lexical overlap (70%) and vector similarity (30%), then keeps 4 chunks. This is a lightweight baseline, not a learned cross-encoder. The response records selected IDs, distances and rerank scores for later evaluation.
+`Reranker.rerank(question, candidates, limit)` is a replaceable interface. The first implementation combines question/content lexical overlap (70%) and vector similarity (30%), then keeps 4 chunks. This is a lightweight baseline, not a learned cross-encoder. The response records selected IDs, distances and rerank scores for later evaluation.
 
 ## Context, answer and citations
 

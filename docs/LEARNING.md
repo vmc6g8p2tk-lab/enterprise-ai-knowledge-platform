@@ -11,3 +11,7 @@
 | Rerank | Reorder candidates after broad vector retrieval. | Lexical overlap baseline; cross-encoder could improve it later. | Lexical overlap misses paraphrases. | **Why retrieve then rerank?** The first stage narrows the corpus cheaply; the second spends more work on few candidates. |
 | Answer/citation | Ground output and show provenance. | Provider returns context indices; server loads citation fields from retrieved rows. | A genuine citation may still fail to support a real model's assertion. | **How do you stop fake citations?** Never trust model-generated IDs/names; validate indices and construct citations from DB rows. |
 | Docker | Reproduce the stack with one command. | Compose plus shared upload volume. | Single host only, no HA or background queue. | **What happens if AI service is down?** Go reports a failed document status or chat error; Phase 1 has no retry worker. |
+
+## A real integration lesson
+
+The first end-to-end upload failed although the Go process had saved the file: it used mode `0600`, while the Python container ran as another user. Both containers now share UID/GID 10001, Go writes `0640`, and Python mounts the upload volume read-only. The first citation integration test also revealed a Python UUID object where a string was expected. These are examples of failures that unit tests alone did not expose; the full Docker stack test caught them.

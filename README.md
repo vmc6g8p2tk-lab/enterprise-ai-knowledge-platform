@@ -20,16 +20,16 @@ Install Docker Desktop with a running Engine, then from this repository root:
 docker compose -f deployments/compose.yaml up --build
 ```
 
-Open `http://localhost:5173`. The Go API listens at `http://localhost:8080`, PostgreSQL is mapped to host port `55432`, and the Python service is internal to Compose. Check containers with `docker compose -f deployments/compose.yaml ps`. Default Compose credentials are **local development only**. For a shared environment, copy `.env.example` to `.env`, choose a strong `POSTGRES_PASSWORD`, update `DATABASE_URL` to match, and keep `.env` private.
+Open `http://localhost:5173`. The Go API listens at host `http://localhost:18080` (container port 8080), PostgreSQL is mapped to host port `55432`, and the Python service is internal to Compose. Host ports bind to `127.0.0.1` for local development; the API port avoids clashing with an existing local project. Check containers with `docker compose -f deployments/compose.yaml ps`. Default Compose credentials are **local development only**. For a shared environment, copy `.env.example` to `.env`, choose a strong `POSTGRES_PASSWORD`, update `DATABASE_URL` to match, and keep `.env` private.
 
 The app starts in test/development model mode. To try real OpenAI-compatible APIs, set `EMBEDDING_PROVIDER=openai`, `ANSWER_PROVIDER=openai`, and `OPENAI_API_KEY` in an untracked `.env`, then **reindex documents** stored under a different embedding provider. The schema expects 1536 dimensions. API cost and output quality have not been measured.
 
 Example API calls:
 
 ```sh
-curl -X POST http://localhost:8080/knowledge-bases -H "Content-Type: application/json" -d '{"name":"Company handbook"}'
-curl -F "file=@handbook.txt" http://localhost:8080/knowledge-bases/KNOWLEDGE_BASE_ID/documents
-curl -X POST http://localhost:8080/knowledge-bases/KNOWLEDGE_BASE_ID/chat -H "Content-Type: application/json" -d '{"question":"What is the leave policy?"}'
+curl -X POST http://localhost:18080/knowledge-bases -H "Content-Type: application/json" -d '{"name":"Company handbook"}'
+curl -F "file=@handbook.txt" http://localhost:18080/knowledge-bases/KNOWLEDGE_BASE_ID/documents
+curl -X POST http://localhost:18080/knowledge-bases/KNOWLEDGE_BASE_ID/chat -H "Content-Type: application/json" -d '{"question":"What is the leave policy?"}'
 ```
 
 ## Architecture

@@ -1,6 +1,5 @@
 import json
 import os
-import re
 from pathlib import Path
 
 import psycopg
@@ -8,7 +7,8 @@ from psycopg.rows import dict_row
 
 from .chunking import chunk_text
 from .parsing import extract_text
-from .providers import AnswerProvider, EmbeddingProvider, terms
+from .providers import AnswerProvider, EmbeddingProvider
+from .reranking import LexicalReranker, Reranker
 
 
 TOP_K = 8
@@ -58,16 +58,8 @@ def process_document(document_id: str, embedder: EmbeddingProvider) -> int:
             raise
 
 
-def rerank(question: str, candidates: list[dict]) -> list[dict]:
-    query_terms = terms(question)
-    for candidate in candidates:
-        content_terms = terms(candidate["content"])
-        lexical = len(query_terms & content_terms) / max(1, len(query_terms))
-        candidate["rerank_score"] = round(0.7 * lexical + 0.3 * max(0.0, 1.0 - candidate["distance"]), 6)
-    return sorted(candidates, key=lambda item: item["rerank_score"], reverse=True)[:RERANK_K]
-
-
-def chat(knowledge_base_id: str, question: str, embedder: EmbeddingProvider, answerer: AnswerProvider) -> dict:
+def chat(knowledge_base_id: str, question: str, embedder: EmbeddingProvider, answerer: AnswerProvider,
+         reranker: Reranker | None = None) -> dict:
     vector = vector_literal(embedder.embed(question))
     with psycopg.connect(database_url(), row_factory=dict_row) as conn:
         rows = conn.execute("""
@@ -79,10 +71,10 @@ def chat(knowledge_base_id: str, question: str, embedder: EmbeddingProvider, ans
         """, (vector, knowledge_base_id, vector, TOP_K)).fetchall()
     candidates = [dict(row) for row in rows]
     initial = [{"chunk_id": row["chunk_id"], "distance": row["distance"]} for row in candidates]
-    selected = rerank(question, candidates)
+    selected = (reranker or LexicalReranker()).rerank(question, candidates, RERANK_K)
     answer, used_indices = answerer.answer(question, selected)
     citations = [
-        {"document_id": selected[index]["document_id"], "document_name": selected[index]["document_name"],
+        {"document_id": str(selected[index]["document_id"]), "document_name": selected[index]["document_name"],
          "chunk_id": selected[index]["chunk_id"], "chunk_index": selected[index]["chunk_index"],
          "content": selected[index]["content"]}
         for index in used_indices
