@@ -49,3 +49,13 @@ def test_reranker_interface_orders_lexical_match():
     ranked = LexicalReranker().rerank("vacation leave", rows, 2)
     assert ranked[0]["content"].startswith("vacation")
     assert ranked[0]["rerank_score"] > ranked[1]["rerank_score"]
+
+
+def test_development_answer_refuses_weak_or_explicitly_absent_evidence():
+    answerer = ExtractiveAnswer()
+    weak = answerer.generate("What is the CEO private phone number?",
+                             [{"content": "The team has a policy for purchases."}])
+    assert weak.abstained and weak.citation_indices == []
+    absent = answerer.generate("What is the retention period for recordings?",
+                               [{"content": "The standard does not set a retention period for recordings."}])
+    assert absent.abstained and absent.citation_indices == []

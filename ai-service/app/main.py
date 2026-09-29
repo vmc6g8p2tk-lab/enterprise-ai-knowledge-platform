@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 from .providers import providers
-from .rag import chat, database_url, process_document
+from .rag import chat, database_url, ensure_embedding_profile, process_document
 
 
 app = FastAPI(title="Enterprise AI Knowledge Platform: AI Service", docs_url=None, redoc_url=None)
@@ -22,6 +22,7 @@ def health() -> dict:
     try:
         with psycopg.connect(database_url(), connect_timeout=2) as conn:
             conn.execute("SELECT 1")
+            ensure_embedding_profile(conn, EMBEDDER)
         return {"status": "ok"}
     except Exception:
         raise HTTPException(status_code=503, detail="database unavailable")

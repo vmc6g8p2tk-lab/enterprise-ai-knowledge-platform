@@ -34,6 +34,12 @@ def test_public_api_upload_chat_and_database_citation():
             assert result["retrieval"]["initial_top_k"]
             assert result["retrieval"]["reranked"]
             assert result["citations"]
+            assert result["debug"]["query"] == "How many days of vacation does the annual leave policy give staff?"
+            assert result["debug"]["retrieved_chunks"]
+            assert "similarity" in result["debug"]["retrieved_chunks"][0]
+            assert result["debug"]["context_chunks"]
+            assert result["debug"]["context_chars"] > 0
+            assert result["debug"]["latency_ms"]["total"] >= 0
             citation = result["citations"][0]
             assert citation["document_id"] == document["id"]
             assert citation["document_name"] == "handbook.txt"
@@ -45,6 +51,7 @@ def test_public_api_upload_chat_and_database_citation():
             assert isolated.status_code == 200
             assert isolated.json()["citations"] == []
             assert isolated.json()["retrieval"]["initial_top_k"] == []
+            assert isolated.json()["abstained"] is True
         finally:
             with psycopg.connect(database) as conn:
                 conn.execute("DELETE FROM knowledge_bases WHERE id IN (%s,%s)", (first_id, second_id))
