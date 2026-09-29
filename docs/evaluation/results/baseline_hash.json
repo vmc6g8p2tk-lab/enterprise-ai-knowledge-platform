@@ -1,0 +1,2346 @@
+{
+  "corpus_sha256": "2390d29d5b3dd398e93b5235f5444e60b07dc19b7e53b3295954f157b4b30881",
+  "embedding_provider": "hash",
+  "embedding_model": "hash-v1",
+  "answer_provider": "extractive-dev",
+  "config": {
+    "top_k": 8,
+    "rerank_k": 4,
+    "max_context_chars": 3200
+  },
+  "metrics": {
+    "positive_cases": 20,
+    "insufficient_cases": 4,
+    "hit_at_k": 1.0,
+    "recall_at_k": 1.0,
+    "mrr": 1.0,
+    "citation_count": 24,
+    "citation_exists_rate": 1.0,
+    "citation_in_scope_rate": 1.0,
+    "expected_document_citation_rate": 1.0,
+    "positive_non_refusal_rate": 1.0,
+    "insufficient_refusal_rate": 0.0
+  },
+  "cases": [
+    {
+      "id": "P01",
+      "question": "How many annual leave days do full-time employees receive?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        55
+      ],
+      "retrieved_chunk_ids": [
+        55,
+        56,
+        57,
+        58,
+        68,
+        66,
+        65,
+        67
+      ],
+      "reranked_chunk_ids": [
+        55,
+        58,
+        56,
+        57
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 55,
+          "distance": 0.5929542183876038,
+          "similarity": 0.40704578161239624
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.871752705328247,
+          "similarity": 0.128247294671753
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.8782838806509972,
+          "similarity": 0.12171611934900284
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.8919313517788455,
+          "similarity": 0.10806864822115447
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.8942228183150291,
+          "similarity": 0.10577718168497086
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.9460312873125076,
+          "similarity": 0.05396871268749237
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.9680561721324921,
+          "similarity": 0.031943827867507935
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.9683772213757038,
+          "similarity": 0.03162277862429619
+        }
+      ],
+      "context_chunk_ids": [
+        55,
+        58,
+        56,
+        57
+      ],
+      "context_chars": 1926,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.25,
+        "retrieval_db": 27.47,
+        "rerank": 0.13,
+        "generation": 0.29,
+        "total": 28.16
+      },
+      "answer": "根据知识库资料：Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 55,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P02",
+      "question": "How long is the probation period for new employees?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        56
+      ],
+      "retrieved_chunk_ids": [
+        56,
+        68,
+        57,
+        64,
+        65,
+        59,
+        60,
+        52
+      ],
+      "reranked_chunk_ids": [
+        56,
+        57,
+        65,
+        68
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 56,
+          "distance": 0.5944464383854399,
+          "similarity": 0.40555356161456013
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.6097536981105804,
+          "similarity": 0.39024630188941956
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.7113248407840729,
+          "similarity": 0.2886751592159271
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.729499101638794,
+          "similarity": 0.27050089836120605
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.7306259870529175,
+          "similarity": 0.2693740129470825
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.7372530698776245,
+          "similarity": 0.2627469301223755
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.7398670017719269,
+          "similarity": 0.2601329982280731
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.7542791816162571,
+          "similarity": 0.24572081838374293
+        }
+      ],
+      "context_chunk_ids": [
+        56,
+        57,
+        65,
+        68
+      ],
+      "context_chars": 2020,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 32.0,
+        "rerank": 0.14,
+        "generation": 0.11,
+        "total": 32.5
+      },
+      "answer": "根据知识库资料：New employees have a three-month probation period.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 56,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P03",
+      "question": "How many remote work days per week are allowed after manager approval?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        57
+      ],
+      "retrieved_chunk_ids": [
+        57,
+        55,
+        58,
+        62,
+        61,
+        63,
+        68,
+        67
+      ],
+      "reranked_chunk_ids": [
+        57,
+        55,
+        58,
+        62
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 57,
+          "distance": 0.6944444386495481,
+          "similarity": 0.3055555613504519
+        },
+        {
+          "chunk_id": 55,
+          "distance": 0.8285014131218615,
+          "similarity": 0.17149858687813846
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.8766840920856054,
+          "similarity": 0.12331590791439462
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.9111476711122793,
+          "similarity": 0.08885232888772066
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.9146679763396971,
+          "similarity": 0.0853320236603029
+        },
+        {
+          "chunk_id": 63,
+          "distance": 0.9270675011595338,
+          "similarity": 0.07293249884046615
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.9275793188088929,
+          "similarity": 0.07242068119110712
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.9422649723966411,
+          "similarity": 0.05773502760335891
+        }
+      ],
+      "context_chunk_ids": [
+        57,
+        55,
+        58,
+        62
+      ],
+      "context_chars": 1859,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 33.13,
+        "rerank": 0.12,
+        "generation": 0.1,
+        "total": 33.61
+      },
+      "answer": "根据知识库资料：Employees may work remotely up to two days per week after their manager approves a recurring schedule.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 57,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P04",
+      "question": "What is the yearly learning budget for a full-time employee?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        58
+      ],
+      "retrieved_chunk_ids": [
+        58,
+        68,
+        61,
+        64,
+        66,
+        65,
+        59,
+        52
+      ],
+      "reranked_chunk_ids": [
+        58,
+        61,
+        64,
+        66
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 58,
+          "distance": 0.40752337597380184,
+          "similarity": 0.5924766240261982
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.6217952966690063,
+          "similarity": 0.37820470333099365
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.6434944272041321,
+          "similarity": 0.3565055727958679
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.6465772688388824,
+          "similarity": 0.35342273116111755
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.6569523513317108,
+          "similarity": 0.3430476486682892
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.6954275369644165,
+          "similarity": 0.3045724630355835
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.7074910402297974,
+          "similarity": 0.29250895977020264
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.7093486016600485,
+          "similarity": 0.29065139833995146
+        }
+      ],
+      "context_chunk_ids": [
+        58,
+        61,
+        64,
+        66
+      ],
+      "context_chars": 2276,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.5,
+        "retrieval_db": 12.39,
+        "rerank": 0.14,
+        "generation": 0.14,
+        "total": 13.19
+      },
+      "answer": "根据知识库资料：Each full-time employee has a yearly learning budget of 1200 currency units.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 58,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P05",
+      "question": "Which account requires multi-factor authentication?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        62
+      ],
+      "retrieved_chunk_ids": [
+        62,
+        57,
+        56,
+        54,
+        59,
+        58,
+        53,
+        52
+      ],
+      "reranked_chunk_ids": [
+        62,
+        57,
+        56,
+        54
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 62,
+          "distance": 0.6649168828080227,
+          "similarity": 0.33508311719197725
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.9607162910913316,
+          "similarity": 0.03928370890866839
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.9668866897753888,
+          "similarity": 0.03311331022461117
+        },
+        {
+          "chunk_id": 54,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 59,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 58,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 53,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 52,
+          "distance": 1.0,
+          "similarity": 0.0
+        }
+      ],
+      "context_chunk_ids": [
+        62,
+        57,
+        56,
+        54
+      ],
+      "context_chars": 1943,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 34.57,
+        "rerank": 0.13,
+        "generation": 0.1,
+        "total": 35.06
+      },
+      "answer": "根据知识库资料：All staff must enable multi-factor authentication on the corporate identity account.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 62,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P06",
+      "question": "How often must owners review production access?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        63
+      ],
+      "retrieved_chunk_ids": [
+        63,
+        59,
+        60,
+        61,
+        64,
+        56,
+        62,
+        57
+      ],
+      "reranked_chunk_ids": [
+        63,
+        59,
+        60,
+        64
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 63,
+          "distance": 0.6498661234934962,
+          "similarity": 0.35013387650650385
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.862495224550224,
+          "similarity": 0.13750477544977602
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.9016789615654636,
+          "similarity": 0.09832103843453643
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.9255161039685041,
+          "similarity": 0.07448389603149586
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.931840179319387,
+          "similarity": 0.06815982068061299
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.9386860654464999,
+          "similarity": 0.061313934553500093
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.9612216628325977,
+          "similarity": 0.03877833716740231
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.9636303510853753,
+          "similarity": 0.036369648914624686
+        }
+      ],
+      "context_chunk_ids": [
+        63,
+        59,
+        60,
+        64
+      ],
+      "context_chars": 2288,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.35,
+        "retrieval_db": 33.15,
+        "rerank": 0.13,
+        "generation": 0.12,
+        "total": 33.76
+      },
+      "answer": "根据知识库资料：Application owners review production access every 90 days.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 63,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P07",
+      "question": "Within how long must a suspected security incident be reported?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        64
+      ],
+      "retrieved_chunk_ids": [
+        64,
+        58,
+        61,
+        57,
+        59,
+        62,
+        65,
+        68
+      ],
+      "reranked_chunk_ids": [
+        64,
+        58,
+        61,
+        59
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 64,
+          "distance": 0.6578404307365417,
+          "similarity": 0.34215956926345825
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.7568455415024024,
+          "similarity": 0.24315445849759765
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.7818880677223206,
+          "similarity": 0.21811193227767944
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.8174258023500443,
+          "similarity": 0.18257419764995575
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.8274328708648682,
+          "similarity": 0.17256712913513184
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.8377785783344083,
+          "similarity": 0.16222142166559173
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.8402808606624603,
+          "similarity": 0.15971913933753967
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.8413342535495758,
+          "similarity": 0.1586657464504242
+        }
+      ],
+      "context_chunk_ids": [
+        64,
+        58,
+        61,
+        59
+      ],
+      "context_chars": 2282,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.25,
+        "retrieval_db": 32.47,
+        "rerank": 0.12,
+        "generation": 0.11,
+        "total": 32.97
+      },
+      "answer": "根据知识库资料：A suspected security incident must be reported to the security duty channel within 30 minutes of discovery.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 64,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P08",
+      "question": "What classification applies to documents with customer identifiers?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        65
+      ],
+      "retrieved_chunk_ids": [
+        65,
+        61,
+        60,
+        68,
+        67,
+        55,
+        59,
+        64
+      ],
+      "reranked_chunk_ids": [
+        65,
+        61,
+        60,
+        68
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 65,
+          "distance": 0.7857142921004978,
+          "similarity": 0.2142857078995022
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.8606533962682901,
+          "similarity": 0.13934660373170993
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.9080290915974704,
+          "similarity": 0.09197090840252964
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.9113031375796538,
+          "similarity": 0.08869686242034625
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.929289316513816,
+          "similarity": 0.07071068348618403
+        },
+        {
+          "chunk_id": 55,
+          "distance": 0.9299859979744552,
+          "similarity": 0.07001400202554475
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.9356880317833433,
+          "similarity": 0.06431196821665675
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.9362423251939512,
+          "similarity": 0.06375767480604877
+        }
+      ],
+      "context_chunk_ids": [
+        65,
+        61,
+        60,
+        68
+      ],
+      "context_chars": 2004,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 34.22,
+        "rerank": 0.18,
+        "generation": 0.1,
+        "total": 34.76
+      },
+      "answer": "根据知识库资料：Documents containing customer identifiers are classified Confidential.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 65,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P09",
+      "question": "On which days are routine production deployments scheduled?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        52
+      ],
+      "retrieved_chunk_ids": [
+        52,
+        55,
+        53,
+        65,
+        61,
+        57,
+        58,
+        54
+      ],
+      "reranked_chunk_ids": [
+        52,
+        61,
+        54,
+        55
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 52,
+          "distance": 0.8797109466532719,
+          "similarity": 0.12028905334672813
+        },
+        {
+          "chunk_id": 55,
+          "distance": 0.8949789895111021,
+          "similarity": 0.10502101048889789
+        },
+        {
+          "chunk_id": 53,
+          "distance": 0.9176768039964677,
+          "similarity": 0.08232319600353233
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.9285714307001659,
+          "similarity": 0.0714285692998341
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.930326698134145,
+          "similarity": 0.06967330186585496
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.9319586137520853,
+          "similarity": 0.06804138624791467
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.9395877906434411,
+          "similarity": 0.06041220935655889
+        },
+        {
+          "chunk_id": 54,
+          "distance": 0.9395877906434411,
+          "similarity": 0.06041220935655889
+        }
+      ],
+      "context_chunk_ids": [
+        52,
+        61,
+        54,
+        55
+      ],
+      "context_chars": 2188,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 32.34,
+        "rerank": 0.12,
+        "generation": 0.11,
+        "total": 32.83
+      },
+      "answer": "根据知识库资料：Routine production deployments run on Tuesday and Thursday between 10:00 and 16:00 local time.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 52,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P10",
+      "question": "What error-rate condition triggers a rollback?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        52
+      ],
+      "retrieved_chunk_ids": [
+        52,
+        61,
+        57,
+        68,
+        56,
+        53,
+        65,
+        66
+      ],
+      "reranked_chunk_ids": [
+        52,
+        53,
+        61,
+        57
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 52,
+          "distance": 0.8071083999075054,
+          "similarity": 0.19289160009249462
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.8510322079370083,
+          "similarity": 0.1489677920629917
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.854521404341501,
+          "similarity": 0.14547859565849897
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.8735720924607542,
+          "similarity": 0.12642790753924582
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.8773721308929998,
+          "similarity": 0.12262786910700019
+        },
+        {
+          "chunk_id": 53,
+          "distance": 0.8826570699410757,
+          "similarity": 0.11734293005892427
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.885459471805676,
+          "similarity": 0.11454052819432403
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.8924917546657251,
+          "similarity": 0.10750824533427494
+        }
+      ],
+      "context_chunk_ids": [
+        52,
+        53,
+        61,
+        57
+      ],
+      "context_chars": 2281,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.25,
+        "retrieval_db": 33.13,
+        "rerank": 0.13,
+        "generation": 0.12,
+        "total": 33.64
+      },
+      "answer": "根据知识库资料：If the error rate exceeds five percent for ten consecutive minutes after a release, the release owner starts rollback.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 52,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P11",
+      "question": "When does the primary on-call engineer hand off?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        53
+      ],
+      "retrieved_chunk_ids": [
+        53,
+        52,
+        58,
+        54,
+        59,
+        60,
+        66,
+        56
+      ],
+      "reranked_chunk_ids": [
+        53,
+        52,
+        54,
+        60
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 53,
+          "distance": 0.508437991142273,
+          "similarity": 0.49156200885772705
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.6975743888362873,
+          "similarity": 0.3024256111637127
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.7436926884559597,
+          "similarity": 0.2563073115440403
+        },
+        {
+          "chunk_id": 54,
+          "distance": 0.7436926884559597,
+          "similarity": 0.2563073115440403
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.7574643790721893,
+          "similarity": 0.24253562092781067
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.7687706649303436,
+          "similarity": 0.23122933506965637
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.772447943687439,
+          "similarity": 0.22755205631256104
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.7837047661454906,
+          "similarity": 0.21629523385450944
+        }
+      ],
+      "context_chunk_ids": [
+        53,
+        52,
+        54,
+        60
+      ],
+      "context_chars": 2278,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 33.34,
+        "rerank": 0.15,
+        "generation": 0.12,
+        "total": 33.86
+      },
+      "answer": "根据知识库资料：The primary on-call engineer hands off at 09:00 every Monday.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 53,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P12",
+      "question": "At what time are PostgreSQL backups checked each morning?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        54
+      ],
+      "retrieved_chunk_ids": [
+        54,
+        67,
+        53,
+        52,
+        62,
+        65,
+        58,
+        55
+      ],
+      "reranked_chunk_ids": [
+        54,
+        67,
+        58,
+        53
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 54,
+          "distance": 0.8006498873040105,
+          "similarity": 0.19935011269598946
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.9333333338300386,
+          "similarity": 0.06666666616996142
+        },
+        {
+          "chunk_id": 53,
+          "distance": 0.9482566335346321,
+          "similarity": 0.051743366465367924
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.9621968008577821,
+          "similarity": 0.03780319914221786
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.9658007222175382,
+          "similarity": 0.03419927778246179
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.9663282503886073,
+          "similarity": 0.03367174961139274
+        },
+        {
+          "chunk_id": 58,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 55,
+          "distance": 1.0,
+          "similarity": 0.0
+        }
+      ],
+      "context_chunk_ids": [
+        54,
+        67,
+        58,
+        53
+      ],
+      "context_chars": 1947,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 32.95,
+        "rerank": 0.2,
+        "generation": 0.16,
+        "total": 33.57
+      },
+      "answer": "根据知识库资料：PostgreSQL backups are checked every morning at 08:00.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 54,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P13",
+      "question": "What purchase amount requires department head and Finance approval?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        59
+      ],
+      "retrieved_chunk_ids": [
+        59,
+        58,
+        56,
+        61,
+        52,
+        66,
+        55,
+        64
+      ],
+      "reranked_chunk_ids": [
+        59,
+        58,
+        56,
+        61
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 59,
+          "distance": 0.7776756882667542,
+          "similarity": 0.22232431173324585
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.8860856409694445,
+          "similarity": 0.11391435903055547
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.8918523830727453,
+          "similarity": 0.10814761692725472
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.9014670625329018,
+          "similarity": 0.09853293746709824
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.9054919946486946,
+          "similarity": 0.09450800535130544
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.9241493120789528,
+          "similarity": 0.07585068792104721
+        },
+        {
+          "chunk_id": 55,
+          "distance": 0.9339901655912399,
+          "similarity": 0.06600983440876007
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.9398886896669865,
+          "similarity": 0.060111310333013535
+        }
+      ],
+      "context_chunk_ids": [
+        59,
+        58,
+        56,
+        61
+      ],
+      "context_chars": 2290,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 33.35,
+        "rerank": 0.13,
+        "generation": 0.13,
+        "total": 33.87
+      },
+      "answer": "根据知识库资料：Purchases above 5000 currency units require approval from the department head and Finance before an order is placed.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 59,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P14",
+      "question": "What must a supplier processing customer data complete before contract signature?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        59
+      ],
+      "retrieved_chunk_ids": [
+        59,
+        61,
+        60,
+        66,
+        65,
+        67,
+        58,
+        68
+      ],
+      "reranked_chunk_ids": [
+        59,
+        61,
+        60,
+        66
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 59,
+          "distance": 0.7074910402297974,
+          "similarity": 0.29250895977020264
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.7623296082019806,
+          "similarity": 0.2376703917980194
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.816989541053772,
+          "similarity": 0.18301045894622803
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.845628559589386,
+          "similarity": 0.154371440410614
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.8477137833833694,
+          "similarity": 0.15228621661663055
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.8492443263530731,
+          "similarity": 0.15075567364692688
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.8712007364988545,
+          "similarity": 0.12879926350114546
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.8739317655563354,
+          "similarity": 0.12606823444366455
+        }
+      ],
+      "context_chunk_ids": [
+        59,
+        61,
+        60,
+        66
+      ],
+      "context_chars": 2583,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.25,
+        "retrieval_db": 32.74,
+        "rerank": 0.13,
+        "generation": 0.15,
+        "total": 33.29
+      },
+      "answer": "根据知识库资料：Any supplier that will process customer data must complete a security review before contract signature.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 59,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P15",
+      "question": "How long are signed supplier contracts retained after expiry?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        60
+      ],
+      "retrieved_chunk_ids": [
+        60,
+        61,
+        62,
+        65,
+        67,
+        63,
+        68,
+        59
+      ],
+      "reranked_chunk_ids": [
+        60,
+        61,
+        62,
+        65
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 60,
+          "distance": 0.6531560031678669,
+          "similarity": 0.3468439968321331
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.8357784547937834,
+          "similarity": 0.16422154520621657
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.9316014444350763,
+          "similarity": 0.06839855556492369
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.9326565007772146,
+          "similarity": 0.06734349922278537
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.9333333338300386,
+          "similarity": 0.06666666616996142
+        },
+        {
+          "chunk_id": 63,
+          "distance": 0.9438565406884823,
+          "similarity": 0.05614345931151765
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.9442505348175444,
+          "similarity": 0.055749465182455604
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.9595773989214063,
+          "similarity": 0.040422601078593745
+        }
+      ],
+      "context_chunk_ids": [
+        60,
+        61,
+        62,
+        65
+      ],
+      "context_chars": 1979,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.25,
+        "retrieval_db": 10.46,
+        "rerank": 0.12,
+        "generation": 0.1,
+        "total": 10.96
+      },
+      "answer": "根据知识库资料：Signed supplier contracts are stored in the legal repository for seven years after expiry.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 60,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P16",
+      "question": "Within how many days must approved business expenses be submitted?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        61
+      ],
+      "retrieved_chunk_ids": [
+        61,
+        58,
+        65,
+        55,
+        57,
+        64,
+        59,
+        62
+      ],
+      "reranked_chunk_ids": [
+        61,
+        58,
+        64,
+        59
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 61,
+          "distance": 0.7195703983306885,
+          "similarity": 0.2804296016693115
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.8108798805141413,
+          "similarity": 0.18912011948585872
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.9041685163974762,
+          "similarity": 0.0958314836025238
+        },
+        {
+          "chunk_id": 55,
+          "distance": 0.9060663506388664,
+          "similarity": 0.09393364936113358
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.9087129086256027,
+          "similarity": 0.09128709137439728
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.9144601076841354,
+          "similarity": 0.08553989231586456
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.9233034998178482,
+          "similarity": 0.0766965001821518
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.9351114313337633,
+          "similarity": 0.06488856866623671
+        }
+      ],
+      "context_chunk_ids": [
+        61,
+        58,
+        64,
+        59
+      ],
+      "context_chars": 2282,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.43,
+        "retrieval_db": 32.17,
+        "rerank": 0.12,
+        "generation": 0.11,
+        "total": 32.85
+      },
+      "answer": "根据知识库资料：Approved business expenses must be submitted within 45 days of purchase with an itemized receipt.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 61,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P17",
+      "question": "What is the first human response target for priority-one support tickets?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        66
+      ],
+      "retrieved_chunk_ids": [
+        66,
+        68,
+        67,
+        64,
+        59,
+        52,
+        53,
+        60
+      ],
+      "reranked_chunk_ids": [
+        66,
+        68,
+        67,
+        64
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 66,
+          "distance": 0.4580688315054423,
+          "similarity": 0.5419311684945577
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.6861770357542345,
+          "similarity": 0.3138229642457655
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.7113248619832055,
+          "similarity": 0.28867513801679445
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.7397103828105444,
+          "similarity": 0.26028961718945565
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.7549509929105934,
+          "similarity": 0.24504900708940658
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.7871995378017012,
+          "similarity": 0.21280046219829885
+        },
+        {
+          "chunk_id": 53,
+          "distance": 0.7983501791462355,
+          "similarity": 0.20164982085376448
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.7997495323344925,
+          "similarity": 0.20025046766550747
+        }
+      ],
+      "context_chunk_ids": [
+        66,
+        68,
+        67,
+        64
+      ],
+      "context_chars": 2245,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 32.91,
+        "rerank": 0.13,
+        "generation": 0.12,
+        "total": 33.43
+      },
+      "answer": "根据知识库资料：Priority-one support tickets receive a first human response within 15 minutes.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 66,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P18",
+      "question": "When does support escalate an unresolved priority-one issue to engineering?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        66
+      ],
+      "retrieved_chunk_ids": [
+        66,
+        67,
+        61,
+        59,
+        58,
+        68,
+        63,
+        56
+      ],
+      "reranked_chunk_ids": [
+        66,
+        67,
+        59,
+        68
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 66,
+          "distance": 0.7084095180034637,
+          "similarity": 0.29159048199653625
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.8190931975841522,
+          "similarity": 0.18090680241584778
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.8514560163021088,
+          "similarity": 0.14854398369789124
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.890309140086174,
+          "similarity": 0.10969085991382599
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.896960583238619,
+          "similarity": 0.10303941676138095
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.8991454169154167,
+          "similarity": 0.10085458308458328
+        },
+        {
+          "chunk_id": 63,
+          "distance": 0.9238244891166687,
+          "similarity": 0.0761755108833313
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.9266326033065498,
+          "similarity": 0.07336739669345016
+        }
+      ],
+      "context_chunk_ids": [
+        66,
+        67,
+        59,
+        68
+      ],
+      "context_chars": 2536,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 34.48,
+        "rerank": 0.13,
+        "generation": 0.13,
+        "total": 34.99
+      },
+      "answer": "根据知识库资料：If a priority-one issue remains unresolved after 60 minutes, the support lead escalates to the on-call engineering lead.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 66,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P19",
+      "question": "How often are customers updated during a priority-one incident?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        67
+      ],
+      "retrieved_chunk_ids": [
+        67,
+        61,
+        66,
+        68,
+        57,
+        64,
+        54,
+        56
+      ],
+      "reranked_chunk_ids": [
+        67,
+        66,
+        68,
+        61
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 67,
+          "distance": 0.7786405384540558,
+          "similarity": 0.2213594615459442
+        },
+        {
+          "chunk_id": 61,
+          "distance": 0.7818880677223206,
+          "similarity": 0.21811193227767944
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.802114725112915,
+          "similarity": 0.19788527488708496
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.8148899376392365,
+          "similarity": 0.18511006236076355
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.8174258172512054,
+          "similarity": 0.18257418274879456
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.8574335128068924,
+          "similarity": 0.1425664871931076
+        },
+        {
+          "chunk_id": 54,
+          "distance": 0.8649141897235568,
+          "similarity": 0.13508581027644317
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.871752705328247,
+          "similarity": 0.128247294671753
+        }
+      ],
+      "context_chunk_ids": [
+        67,
+        66,
+        68,
+        61
+      ],
+      "context_chars": 2232,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.26,
+        "retrieval_db": 33.18,
+        "rerank": 0.12,
+        "generation": 0.11,
+        "total": 33.7
+      },
+      "answer": "根据知识库资料：During a priority-one incident, support sends affected customers an update every 30 minutes until mitigation is complete.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 67,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P20",
+      "question": "When is the customer satisfaction survey sent after ticket closure?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        68
+      ],
+      "retrieved_chunk_ids": [
+        68,
+        67,
+        66,
+        54,
+        58,
+        63,
+        64,
+        65
+      ],
+      "reranked_chunk_ids": [
+        68,
+        66,
+        65,
+        67
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 68,
+          "distance": 0.4711140990257263,
+          "similarity": 0.5288859009742737
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.6837722063064575,
+          "similarity": 0.3162277936935425
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.7121668756008148,
+          "similarity": 0.2878331243991852
+        },
+        {
+          "chunk_id": 54,
+          "distance": 0.7298283794471138,
+          "similarity": 0.27017162055288624
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.7298283794471138,
+          "similarity": 0.27017162055288624
+        },
+        {
+          "chunk_id": 63,
+          "distance": 0.7336881756782532,
+          "similarity": 0.2663118243217468
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.7433803081512451,
+          "similarity": 0.2566196918487549
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.7444493770599365,
+          "similarity": 0.2555506229400635
+        }
+      ],
+      "context_chunk_ids": [
+        68,
+        66,
+        65,
+        67
+      ],
+      "context_chars": 2276,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.23,
+        "retrieval_db": 33.03,
+        "rerank": 0.12,
+        "generation": 0.12,
+        "total": 33.51
+      },
+      "answer": "根据知识库资料：A customer satisfaction survey is sent 24 hours after a support ticket is closed.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 68,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "N01",
+      "question": "What is the CEO's private phone number?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        59,
+        58,
+        64,
+        53,
+        52,
+        68,
+        66,
+        67
+      ],
+      "reranked_chunk_ids": [
+        59,
+        58,
+        64,
+        52
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 59,
+          "distance": 0.7213148093615414,
+          "similarity": 0.27868519063845865
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.7281450467196136,
+          "similarity": 0.27185495328038645
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.744969300775805,
+          "similarity": 0.25503069922419497
+        },
+        {
+          "chunk_id": 53,
+          "distance": 0.753030411989403,
+          "similarity": 0.24696958801059699
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.7594219082077063,
+          "similarity": 0.24057809179229372
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.7634750236116356,
+          "similarity": 0.23652497638836445
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.7787575506793721,
+          "similarity": 0.22124244932062787
+        },
+        {
+          "chunk_id": 67,
+          "distance": 0.7878679569920288,
+          "similarity": 0.21213204300797117
+        }
+      ],
+      "context_chunk_ids": [
+        59,
+        58,
+        64,
+        52
+      ],
+      "context_chars": 2590,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 32.67,
+        "rerank": 0.13,
+        "generation": 0.13,
+        "total": 33.19
+      },
+      "answer": "根据知识库资料：Purchases above 5000 currency units require approval from the department head and Finance before an order is placed.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 59,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": false
+    },
+    {
+      "id": "N02",
+      "question": "What is the data retention period for customer call recordings?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        60,
+        65,
+        68,
+        59,
+        64,
+        53,
+        66,
+        52
+      ],
+      "reranked_chunk_ids": [
+        65,
+        60,
+        59,
+        66
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 60,
+          "distance": 0.6435344815254211,
+          "similarity": 0.35646551847457886
+        },
+        {
+          "chunk_id": 65,
+          "distance": 0.6486178934574127,
+          "similarity": 0.3513821065425873
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.6826684474945068,
+          "similarity": 0.31733155250549316
+        },
+        {
+          "chunk_id": 59,
+          "distance": 0.6932139992713928,
+          "similarity": 0.3067860007286072
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.7148670256137848,
+          "similarity": 0.2851329743862152
+        },
+        {
+          "chunk_id": 53,
+          "distance": 0.7300156354904175,
+          "similarity": 0.2699843645095825
+        },
+        {
+          "chunk_id": 66,
+          "distance": 0.7301564514636993,
+          "similarity": 0.26984354853630066
+        },
+        {
+          "chunk_id": 52,
+          "distance": 0.7310255307570411,
+          "similarity": 0.26897446924295887
+        }
+      ],
+      "context_chunk_ids": [
+        65,
+        60,
+        59,
+        66
+      ],
+      "context_chars": 2627,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 33.36,
+        "rerank": 0.13,
+        "generation": 0.14,
+        "total": 33.88
+      },
+      "answer": "根据知识库资料：The standard does not set a retention period for recordings.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 65,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": false
+    },
+    {
+      "id": "N03",
+      "question": "How many paid holidays do independent contractors receive?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        66,
+        55,
+        68,
+        56,
+        57,
+        58,
+        54,
+        53
+      ],
+      "reranked_chunk_ids": [
+        66,
+        55,
+        68,
+        57
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 66,
+          "distance": 0.9597740968927202,
+          "similarity": 0.0402259031072798
+        },
+        {
+          "chunk_id": 55,
+          "distance": 0.9649929979439376,
+          "similarity": 0.03500700205606244
+        },
+        {
+          "chunk_id": 68,
+          "distance": 0.9704343789329755,
+          "similarity": 0.02956562106702454
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.9713230312308399,
+          "similarity": 0.02867696876916015
+        },
+        {
+          "chunk_id": 57,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 58,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 54,
+          "distance": 1.0,
+          "similarity": 0.0
+        },
+        {
+          "chunk_id": 53,
+          "distance": 1.0,
+          "similarity": 0.0
+        }
+      ],
+      "context_chunk_ids": [
+        66,
+        55,
+        68,
+        57
+      ],
+      "context_chars": 2179,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.24,
+        "retrieval_db": 34.71,
+        "rerank": 0.2,
+        "generation": 0.18,
+        "total": 35.36
+      },
+      "answer": "根据知识库资料：Priority-one support tickets receive a first human response within 15 minutes.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 66,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": false
+    },
+    {
+      "id": "N04",
+      "question": "What quantum encryption policy applies to personal devices?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        61,
+        57,
+        60,
+        58,
+        56,
+        62,
+        55,
+        64
+      ],
+      "reranked_chunk_ids": [
+        61,
+        57,
+        60,
+        58
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 61,
+          "distance": 0.8954900472012176,
+          "similarity": 0.10450995279878239
+        },
+        {
+          "chunk_id": 57,
+          "distance": 0.9319586137520853,
+          "similarity": 0.06804138624791467
+        },
+        {
+          "chunk_id": 60,
+          "distance": 0.9386860635485071,
+          "similarity": 0.061313936451492856
+        },
+        {
+          "chunk_id": 58,
+          "distance": 0.9395877906434411,
+          "similarity": 0.06041220935655889
+        },
+        {
+          "chunk_id": 56,
+          "distance": 0.9426460641709604,
+          "similarity": 0.05735393582903958
+        },
+        {
+          "chunk_id": 62,
+          "distance": 0.9637261868254058,
+          "similarity": 0.036273813174594216
+        },
+        {
+          "chunk_id": 55,
+          "distance": 0.9649929989872277,
+          "similarity": 0.03500700101277232
+        },
+        {
+          "chunk_id": 64,
+          "distance": 0.9681211625969757,
+          "similarity": 0.03187883740302433
+        }
+      ],
+      "context_chunk_ids": [
+        61,
+        57,
+        60,
+        58
+      ],
+      "context_chars": 1998,
+      "provider_usage_tokens": null,
+      "latency_ms": {
+        "embedding": 0.28,
+        "retrieval_db": 33.54,
+        "rerank": 0.11,
+        "generation": 0.1,
+        "total": 34.05
+      },
+      "answer": "根据知识库资料：The seven-year rule here applies to signed supplier contracts, not customer call recordings.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 61,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": false
+    }
+  ]
+}

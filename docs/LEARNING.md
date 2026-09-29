@@ -15,3 +15,15 @@
 ## A real integration lesson
 
 The first end-to-end upload failed although the Go process had saved the file: it used mode `0600`, while the Python container ran as another user. Both containers now share UID/GID 10001, Go writes `0640`, and Python mounts the upload volume read-only. The first citation integration test also revealed a Python UUID object where a string was expected. These are examples of failures that unit tests alone did not expose; the full Docker stack test caught them.
+
+## Phase 2 interview notes
+
+| Topic | Why it matters | Current implementation and tradeoff | Interview answer direction |
+| --- | --- | --- | --- |
+| Batched embeddings | One network request per chunk wastes latency and rate-limit budget. | The provider batches up to 32 texts and restores response order by index. A large document still runs batches sequentially to bound load. | Explain that batch size is a concurrency/cost control, not proof of throughput; measure with the real provider later. |
+| Provider failures | 429 and transient 5xx errors are expected external dependencies. | Bounded retry, short backoff, Retry-After cap and per-attempt timeout; 4xx auth errors fail immediately. Errors omit key, headers and response body. | Distinguish retryable transient errors from user/configuration errors, and mention total retry budget. |
+| Vector space identity | Equal vector dimensions do not mean vectors from two models are comparable. | PostgreSQL stores provider, model identity and dimension; ingestion/query reject a mismatch. | A model switch requires rebuilding all vectors, even if both outputs are 1536-dimensional. |
+| Reindex safety | Updating the active vector column one document at a time mixes spaces and can break retrieval. | Maintenance command writes a separate table, checks all ready documents, atomically swaps tables/profile, keeps a rollback backup. | Explain staging, failure before cutover, cutover transaction, verification and rollback. This is maintenance, not zero downtime. |
+| Evaluation | A successful request is not evidence of retrieval or answer quality. | Twenty source-backed questions plus four unsupported questions, raw per-case outputs and explicit Hit@K/Recall@K/MRR/citation metrics. | State the corpus size and synthetic nature; never present the development hash result as real-model quality. |
+| Abstention | A citation can be real but support an irrelevant answer. | A baseline run exposed four false answers; a limited development lexical evidence gate made all four abstain on this corpus. | Describe the before/after and note that paraphrases or unseen questions can still fail. |
+| Debug privacy | RAG needs visibility into retrieved chunks and latency, but ordinary logs should not become a document archive. | Local debug response includes query/context details; server log records IDs, counts, lengths and time only. | Explain why access control and debug disabling are required before shared deployment. |

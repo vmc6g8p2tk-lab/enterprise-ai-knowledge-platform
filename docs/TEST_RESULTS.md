@@ -1,5 +1,25 @@
 # Test results
 
+## Phase 2 final verification (2026-09-30)
+
+These results are from the existing local Docker Desktop project. PostgreSQL/pgvector and the four Compose services were real; embedding/answer providers were the deterministic development implementations. No `OPENAI_API_KEY` was present, so live embedding, live LLM, model latency, cost and semantic answer quality are **not verified**.
+
+| Check | Observed result |
+| --- | --- |
+| Python full suite | `18 passed in 2.95s` with `TEST_DATABASE_URL` and `E2E_API_URL` set after the final AI image rebuild; includes real pgvector integration, provider mock/error/timeout/batch tests, knowledge-base isolation, citation regression, evaluation runner and staged reindex/rollback/finalize in an isolated real database |
+| Go tests | `go test -count=1 ./...` PASS in `golang:1.24-alpine`; `internal/httpapi` passed, other Go packages have no tests |
+| Go vet | `go vet ./...` PASS in the same Linux container |
+| Go race | `CGO_ENABLED=1 go test -race -count=1 ./...` PASS with GCC/musl in the Linux container; this covers the existing Go tests, not a concurrent load |
+| Frontend | `npm run build` PASS; TypeScript and Vite build completed |
+| Compose | PostgreSQL, Go backend, Python AI service and frontend all reported `healthy` after rebuild |
+| Migrations | Real PostgreSQL `schema_migrations` contains `0001_initial.sql`, `0002_embedding_profile.sql`, `0003_reindex_backup.sql` |
+| Local evaluation before/after | 20 source-backed positive and 4 unsupported questions, same corpus/config; Hit@8, Recall@8 and MRR all 1.00 in both runs; exact citation validity and KB scope 1.00; unsupported refusal changed 0/4 to 4/4. Raw case-level data in `docs/evaluation/results/` |
+| Real model calls | NOT TESTED; no user API key was supplied |
+
+The first Phase 2 integration test found a `dict_row`/tuple access error in the embedding-profile guard; it was corrected and the real database test passed afterward. The initial local evaluation exposed 4/4 unsupported-question refusal failures in the development answerer. Its evidence gate was changed and rerun; the failures remain recorded in the baseline JSON and `RAG_EVALUATION.md`. A plain host Go invocation also failed because `go` was not on PATH, and a direct invocation failed because the default Windows Go cache was inaccessible; the requested Go checks were successfully executed in the Linux container. These failed attempts are not counted as passes.
+
+## Phase 1 historical verification
+
 This file records executed commands and observed outcomes on a Windows Docker Desktop machine. No skipped or unrun test is counted as passed. The default hash embedding and extractive answer mode were used throughout; no real model key was supplied.
 
 | Check | Result | Evidence |
