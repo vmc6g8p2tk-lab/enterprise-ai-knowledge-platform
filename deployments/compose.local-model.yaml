@@ -1,0 +1,42 @@
+# Opt-in GPU model profile. Keep the default Compose stack in development mode.
+services:
+  ollama:
+    image: ollama/ollama@sha256:8262851b2846b87c649eddf3e76beb270c52f4d1bc94559f47efde16b0841551
+    gpus: all
+    environment:
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_MAX_LOADED_MODELS: "2"
+      OLLAMA_KEEP_ALIVE: "30m"
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  ai-service:
+    environment:
+      EMBEDDING_PROVIDER: openai
+      ANSWER_PROVIDER: openai
+      # Ollama's local OpenAI-compatible endpoint ignores this placeholder.
+      OPENAI_API_KEY: ollama
+      OPENAI_BASE_URL: http://ollama:11434/v1
+      OPENAI_EMBEDDING_MODEL: bge-m3:567m-fp16
+      OPENAI_CHAT_MODEL: qwen2.5:7b-instruct-q4_K_M
+      EMBEDDING_DIMENSIONS: "1024"
+      EMBEDDING_BATCH_SIZE: "16"
+      MODEL_TIMEOUT_SECONDS: "180"
+      MODEL_MAX_RETRIES: "1"
+      MODEL_TEMPERATURE: "0"
+      MODEL_SEED: "42"
+    volumes:
+      - ../docs/evaluation:/evaluation:ro
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+volumes:
+  ollama_models:

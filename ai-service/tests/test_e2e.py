@@ -1,4 +1,4 @@
-"""Full Compose API test. Requires E2E_API_URL and TEST_DATABASE_URL; no mocks or skips."""
+"""Full Compose API test. Uses the live stack's database; no mocks or skips."""
 import os
 
 import httpx
@@ -9,7 +9,7 @@ from reportlab.pdfgen.canvas import Canvas
 
 def test_public_api_upload_chat_and_database_citation():
     api = os.environ["E2E_API_URL"].rstrip("/")
-    database = os.environ["TEST_DATABASE_URL"]
+    database = os.environ.get("E2E_DATABASE_URL", os.environ["TEST_DATABASE_URL"])
     with httpx.Client(timeout=120) as client:
         health = client.get(f"{api}/healthz")
         assert health.status_code == 200
@@ -30,7 +30,7 @@ def test_public_api_upload_chat_and_database_citation():
             response = client.post(f"{api}/knowledge-bases/{first_id}/chat", json={"question": "How many days of vacation does the annual leave policy give staff?"})
             assert response.status_code == 200, response.text
             result = response.json()
-            assert "twenty days" in result["answer"].lower()
+            assert any(text in result["answer"].lower() for text in ("twenty days", "20 days"))
             assert result["retrieval"]["initial_top_k"]
             assert result["retrieval"]["reranked"]
             assert result["citations"]
@@ -45,7 +45,10 @@ def test_public_api_upload_chat_and_database_citation():
             assert citation["document_name"] == "handbook.txt"
             with psycopg.connect(database) as conn:
                 row = conn.execute("SELECT c.document_id,c.chunk_index,c.content,vector_dims(c.embedding) FROM document_chunks c WHERE c.id=%s", (citation["chunk_id"],)).fetchone()
-                assert (str(row[0]), *row[1:]) == (document["id"], citation["chunk_index"], citation["content"], 1536)
+                profile_dimensions = conn.execute(
+                    "SELECT dimensions FROM embedding_profile WHERE singleton=true").fetchone()[0]
+                assert (str(row[0]), *row[1:]) == (
+                    document["id"], citation["chunk_index"], citation["content"], profile_dimensions)
                 assert conn.execute("SELECT count(*) FROM document_chunks WHERE document_id=%s", (document["id"],)).fetchone()[0] == document["chunk_count"]
             isolated = client.post(f"{api}/knowledge-bases/{second_id}/chat", json={"question": "How many days of vacation?"})
             assert isolated.status_code == 200
@@ -59,7 +62,7 @@ def test_public_api_upload_chat_and_database_citation():
 
 def test_pdf_docx_markdown_upload_and_failed_status(tmp_path):
     api = os.environ["E2E_API_URL"].rstrip("/")
-    database = os.environ["TEST_DATABASE_URL"]
+    database = os.environ.get("E2E_DATABASE_URL", os.environ["TEST_DATABASE_URL"])
     pdf = tmp_path / "handbook.pdf"
     canvas = Canvas(str(pdf)); canvas.drawString(72, 750, "PDF travel policy reimburses train tickets."); canvas.save()
     docx = tmp_path / "handbook.docx"

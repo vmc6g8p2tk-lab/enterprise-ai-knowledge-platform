@@ -103,3 +103,21 @@ def test_llm_answer_without_valid_context_reference_abstains():
     assert result.abstained
     assert result.citation_indices == []
     assert "unsupported claim" not in result.answer.lower()
+
+
+def test_llm_optional_sampling_config_is_forwarded():
+    requests = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(json.loads(request.content))
+        return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps({
+            "answer": "supported", "citation_numbers": [0], "insufficient": False})}}]})
+
+    transport = RetryingJSONClient("test-only-key", "https://example.invalid/v1",
+                                   client=httpx.Client(transport=httpx.MockTransport(respond)))
+    provider = OpenAIAnswer("test-only-key", "https://example.invalid/v1", "test-chat",
+                            transport=transport, temperature=0.0, seed=42)
+    assert provider.model_id.startswith("test-chat@")
+    assert provider.generate("question", [{"content": "context"}]).citation_indices == [0]
+    assert requests[0]["temperature"] == 0.0
+    assert requests[0]["seed"] == 42

@@ -54,6 +54,18 @@ def test_staged_dimension_change_and_rollback_in_isolated_database(tmp_path, mon
         with psycopg.connect(test_url) as conn:
             assert conn.execute("SELECT vector_dims(embedding) FROM document_chunks").fetchone()[0] == 64
             assert conn.execute("SELECT to_regclass('public.document_chunks_backup')").fetchone()[0] is None
+            conn.execute("DELETE FROM knowledge_bases WHERE id=%s", (kb_id,))
+        empty = staged_reindex(test_url, tmp_path, HashEmbedding(96),
+                               maintenance_confirmed=True, dry_run=True)
+        assert empty["empty_switch"] and empty["documents"] == 0
+        switched = staged_reindex(test_url, tmp_path, HashEmbedding(96),
+                                  maintenance_confirmed=True)
+        assert switched["staged_chunks"] == 0
+        with psycopg.connect(test_url) as conn:
+            assert conn.execute("SELECT dimensions FROM embedding_profile").fetchone()[0] == 96
+            assert conn.execute("SELECT format_type(a.atttypid,a.atttypmod) FROM pg_attribute a "
+                                "JOIN pg_class t ON t.oid=a.attrelid "
+                                "WHERE t.relname='document_chunks' AND a.attname='embedding'").fetchone()[0] == "vector(96)"
     finally:
         with psycopg.connect(admin_url, autocommit=True) as admin:
             admin.execute(sql.SQL("DROP DATABASE {} WITH (FORCE)").format(sql.Identifier(db_name)))

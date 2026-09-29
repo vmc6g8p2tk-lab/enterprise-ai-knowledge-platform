@@ -27,3 +27,13 @@ For rollback or finalization, substitute --mode rollback or --mode finalize in t
 The code refuses a new build if an earlier stage or backup still exists; inspect it before taking any manual database action. An interrupted build leaves the old active table intact. An interrupted cutover transaction rolls back. The database operations were tested with a 1536-to-64-dimensional hash-provider rebuild, rollback and finalize in an isolated real pgvector database. A real paid-model rebuild has **not** been run without an API key. Model changes may incur substantial API cost; use a small isolated corpus first.
 
 This Phase 2 workflow is intentionally a maintenance operation. It is not an online dual-write, zero-downtime migration.
+
+## Empty database and local model acceptance
+
+If the database has **zero documents and zero chunks**, the same confirmed maintenance command atomically changes the empty pgvector column dimension and active provider profile. No old vectors exist to rebuild, and no backup table is needed. It refuses this shortcut if any document or chunk exists. In Phase 2.5, the main test database was observed empty before switching from hash-v1/vector(1536) to BGE-M3/vector(1024); both schema and profile were checked directly afterward.
+
+The separate `ai-service/scripts/check_local_reindex.py` acceptance command creates a temporary PostgreSQL database, indexes one public corpus document with hash vectors, rebuilds its four chunks with the **running local BGE-M3 model**, checks vector(1024), rolls back to the original 1536-dimensional hash vectors, and removes the temporary database. It verifies the nonempty rebuild path without touching the main database. Run it from `ai-service/` with `TEST_DATABASE_URL` pointing to a local admin-capable test database and Ollama available at `http://127.0.0.1:11434/v1`:
+
+    python -m scripts.check_local_reindex
+
+The embedding profile includes a hash of the provider base URL. A host address and the Docker-network address therefore produce different identities; run production reindex from the same endpoint configuration the serving AI container will use.

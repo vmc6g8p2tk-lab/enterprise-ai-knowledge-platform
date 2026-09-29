@@ -49,7 +49,28 @@ def staged_reindex(db_url: str, upload_dir: Path, embedder: EmbeddingProvider,
             documents = conn.execute(
                 "SELECT id,storage_path FROM documents WHERE status='ready' ORDER BY id").fetchall()
             if not documents:
-                raise ValueError("there are no ready documents to reindex")
+                # An entirely empty database has no vectors to regenerate. Change the
+                # column typmod and profile together, only during confirmed maintenance.
+                document_count = conn.execute("SELECT count(*) AS total FROM documents").fetchone()["total"]
+                chunk_count = conn.execute("SELECT count(*) AS total FROM document_chunks").fetchone()["total"]
+                if document_count or chunk_count:
+                    raise ValueError("no ready documents, but stored documents/chunks exist")
+                summary = {
+                    "documents": 0, "from": dict(current),
+                    "to": {"provider_name": embedder.provider_name,
+                           "model_id": embedder.model_id, "dimensions": embedder.dimensions},
+                    "empty_switch": True,
+                }
+                if dry_run:
+                    return {**summary, "dry_run": True}
+                conn.execute("LOCK TABLE document_chunks IN ACCESS EXCLUSIVE MODE")
+                conn.execute(f"ALTER TABLE document_chunks ALTER COLUMN embedding TYPE vector({embedder.dimensions})")
+                conn.execute(
+                    "UPDATE embedding_profile SET provider_name=%s,model_id=%s,dimensions=%s,updated_at=now() "
+                    "WHERE singleton=true",
+                    (embedder.provider_name, embedder.model_id, embedder.dimensions))
+                conn.commit()
+                return {**summary, "dry_run": False, "staged_chunks": 0}
             sources = [(row["id"], _safe_source(row["storage_path"], upload_root))
                        for row in documents]
             summary = {

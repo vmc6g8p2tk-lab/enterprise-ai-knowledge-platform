@@ -1,4 +1,4 @@
-# RAG design — Phase 1
+# RAG design — Phases 1–2.5
 
 ## Chunking
 
@@ -8,7 +8,7 @@ Text is cleaned while retaining paragraph breaks. Paragraphs are packing units, 
 
 The EmbeddingProvider interface exposes provider name, model identity, dimensions, single-text embed and batch embed. Ingestion passes all chunks to embed_batch; the OpenAI-compatible adapter sends bounded groups (default 32) to the [Embeddings API](https://developers.openai.com/api/reference/resources/embeddings/methods/create), restores response order by index and validates every returned vector. The default HashEmbedding is a deterministic lexical projection for local development, **not a semantic model**. A singleton DB profile and pgvector column check reject mixed models and dimension mismatches. An existing corpus needs the [staged reindex workflow](REINDEX.md) before switching even between same-dimensional models.
 
-OpenAI-compatible calls have per-attempt timeout, at most two retries by default, retry only transient HTTP/network failures, honor a bounded Retry-After, and sanitize errors so credentials and response bodies do not enter ordinary logs. The [provider rate-limit guidance](https://developers.openai.com/api/docs/guides/rate-limits) informed those bounds. Real provider behavior remains unverified without a key.
+OpenAI-compatible calls have per-attempt timeout, at most two retries by default, retry only transient HTTP/network failures, honor a bounded Retry-After, and sanitize errors so credentials and response bodies do not enter ordinary logs. The [provider rate-limit guidance](https://developers.openai.com/api/docs/guides/rate-limits) informed those bounds. The opt-in Ollama profile sends real batch embeddings to BGE-M3 with a batch limit of 16 and 1024 dimensions; its actual vector shape and GPU use were verified. Cloud behavior remains unverified without a real key.
 
 ## Retrieval and Top-K
 
@@ -24,6 +24,6 @@ The AnswerProvider.generate interface returns text, context indices, optional to
 
 Development debug responses record query, candidate chunk contents and cosine similarity, rerank order, final context, character count, estimated tokens, provider usage tokens when returned, and per-stage/total latency. Ordinary server logs keep only knowledge-base IDs, counts, lengths and time; full uploaded text and secret headers are never intentionally logged.
 
-## Remaining evaluation work
+## Evaluation status and remaining work
 
-A versioned 20-positive/4-unsupported labeled set now reports Hit@K, Recall@K, MRR, citation validity/scope/expected document and unsupported refusal. The [evaluation report](RAG_EVALUATION.md) shows a development-mode before/after. The small, synthetic set does not establish semantic answer quality. Real-model integration, human-reviewed faithfulness, broader parser edge cases, token budget and costs remain unverified. No production performance number is claimed.
+A versioned 20-positive/4-unsupported labeled set reports Hit@K, Recall@K, MRR, citation validity/scope/expected document and unsupported refusal separately for development and local real-model modes. The [evaluation report](RAG_EVALUATION.md) includes actual local GPU measurements; the [assistant's ten-case review](evaluation/MANUAL_REVIEW_LOCAL.md) explicitly separates answer support from extra citation relevance. One final-run answer still had an unnecessary adjacent citation. The small, synthetic set does not establish general semantic quality; independent human review, broader parser edge cases, prompt-injection testing, token-budget accuracy, cloud cost and concurrent capacity remain unverified. No production performance number is claimed.

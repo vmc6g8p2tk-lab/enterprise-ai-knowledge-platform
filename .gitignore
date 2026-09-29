@@ -20,6 +20,12 @@ coverage/
 *.prof
 *.pprof
 uploads/
+models/
+ollama_models/
+*.gguf
+*.safetensors
+*.pt
+*.pth
 .idea/
 .vscode/
 .DS_Store
