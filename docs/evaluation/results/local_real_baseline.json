@@ -1,0 +1,2475 @@
+{
+  "corpus_sha256": "2390d29d5b3dd398e93b5235f5444e60b07dc19b7e53b3295954f157b4b30881",
+  "embedding_provider": "openai-compatible",
+  "embedding_model": "bge-m3:567m-fp16@d7c0c9f0a59e",
+  "answer_provider": "openai-compatible",
+  "document_processing": [
+    {
+      "document_name": "operations-runbook.md",
+      "chunks": 3,
+      "elapsed_ms": 5704.49
+    },
+    {
+      "document_name": "people-handbook.md",
+      "chunks": 4,
+      "elapsed_ms": 271.93
+    },
+    {
+      "document_name": "procurement-guide.md",
+      "chunks": 3,
+      "elapsed_ms": 174.01
+    },
+    {
+      "document_name": "security-standard.md",
+      "chunks": 4,
+      "elapsed_ms": 160.14
+    },
+    {
+      "document_name": "support-playbook.md",
+      "chunks": 3,
+      "elapsed_ms": 55.85
+    }
+  ],
+  "ingestion_embedding_calls": [
+    {
+      "texts": 3,
+      "elapsed_ms": 5684.08
+    },
+    {
+      "texts": 4,
+      "elapsed_ms": 245.45
+    },
+    {
+      "texts": 3,
+      "elapsed_ms": 150.52
+    },
+    {
+      "texts": 4,
+      "elapsed_ms": 142.72
+    },
+    {
+      "texts": 3,
+      "elapsed_ms": 33.96
+    }
+  ],
+  "config": {
+    "top_k": 8,
+    "rerank_k": 4,
+    "max_context_chars": 3200
+  },
+  "metrics": {
+    "positive_cases": 20,
+    "insufficient_cases": 4,
+    "hit_at_k": 1.0,
+    "recall_at_k": 1.0,
+    "mrr": 1.0,
+    "citation_count": 22,
+    "citation_exists_rate": 1.0,
+    "citation_in_scope_rate": 1.0,
+    "expected_document_citation_rate": 1.0,
+    "positive_non_refusal_rate": 1.0,
+    "insufficient_refusal_rate": 1.0
+  },
+  "cases": [
+    {
+      "id": "P01",
+      "question": "How many annual leave days do full-time employees receive?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        167
+      ],
+      "retrieved_chunk_ids": [
+        167,
+        170,
+        168,
+        169,
+        173,
+        175,
+        164,
+        165
+      ],
+      "reranked_chunk_ids": [
+        167,
+        170,
+        168,
+        169
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 167,
+          "distance": 0.2748082548608425,
+          "similarity": 0.7251917451391575
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.45718134046402537,
+          "similarity": 0.5428186595359746
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.4863298245471811,
+          "similarity": 0.5136701754528189
+        },
+        {
+          "chunk_id": 169,
+          "distance": 0.49822789430618286,
+          "similarity": 0.5017721056938171
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.5286302072871172,
+          "similarity": 0.4713697927128828
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5650586926797045,
+          "similarity": 0.43494130732029546
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.5948093767293714,
+          "similarity": 0.4051906232706286
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.6070697775995968,
+          "similarity": 0.3929302224004032
+        }
+      ],
+      "context_chunk_ids": [
+        167,
+        170,
+        168,
+        169
+      ],
+      "context_chars": 1926,
+      "provider_usage_tokens": {
+        "prompt_tokens": 468,
+        "completion_tokens": 39,
+        "total_tokens": 507
+      },
+      "latency_ms": {
+        "embedding": 1470.12,
+        "retrieval_db": 7.37,
+        "rerank": 0.61,
+        "generation": 380.16,
+        "total": 1858.28
+      },
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 167,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P02",
+      "question": "How long is the probation period for new employees?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        168
+      ],
+      "retrieved_chunk_ids": [
+        168,
+        169,
+        170,
+        167,
+        173,
+        175,
+        176,
+        172
+      ],
+      "reranked_chunk_ids": [
+        168,
+        169,
+        170,
+        167
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 168,
+          "distance": 0.29447655114671156,
+          "similarity": 0.7055234488532884
+        },
+        {
+          "chunk_id": 169,
+          "distance": 0.4274941682815552,
+          "similarity": 0.5725058317184448
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.4598040049859178,
+          "similarity": 0.5401959950140822
+        },
+        {
+          "chunk_id": 167,
+          "distance": 0.4968423251101547,
+          "similarity": 0.5031576748898453
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.49705678119302676,
+          "similarity": 0.5029432188069732
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.4997920394439461,
+          "similarity": 0.5002079605560539
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.519657035057874,
+          "similarity": 0.480342964942126
+        },
+        {
+          "chunk_id": 172,
+          "distance": 0.5394891225987142,
+          "similarity": 0.4605108774012858
+        }
+      ],
+      "context_chunk_ids": [
+        168,
+        169,
+        170,
+        167
+      ],
+      "context_chars": 1926,
+      "provider_usage_tokens": {
+        "prompt_tokens": 467,
+        "completion_tokens": 33,
+        "total_tokens": 500
+      },
+      "latency_ms": {
+        "embedding": 1495.64,
+        "retrieval_db": 6.65,
+        "rerank": 0.11,
+        "generation": 345.79,
+        "total": 1848.22
+      },
+      "answer": "The probation period for new employees is three months.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 168,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P03",
+      "question": "How many remote work days per week are allowed after manager approval?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        169
+      ],
+      "retrieved_chunk_ids": [
+        169,
+        167,
+        170,
+        168,
+        175,
+        173,
+        164,
+        172
+      ],
+      "reranked_chunk_ids": [
+        169,
+        167,
+        170,
+        173
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 169,
+          "distance": 0.2655155658721924,
+          "similarity": 0.7344844341278076
+        },
+        {
+          "chunk_id": 167,
+          "distance": 0.44583398749422787,
+          "similarity": 0.5541660125057721
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.4642945006507967,
+          "similarity": 0.5357054993492033
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.46938136402479536,
+          "similarity": 0.5306186359752046
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.4798786688140081,
+          "similarity": 0.5201213311859919
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.486114973824578,
+          "similarity": 0.513885026175422
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.49227388134066985,
+          "similarity": 0.5077261186593302
+        },
+        {
+          "chunk_id": 172,
+          "distance": 0.538893970185158,
+          "similarity": 0.46110602981484194
+        }
+      ],
+      "context_chunk_ids": [
+        169,
+        167,
+        170,
+        173
+      ],
+      "context_chars": 1905,
+      "provider_usage_tokens": {
+        "prompt_tokens": 472,
+        "completion_tokens": 38,
+        "total_tokens": 510
+      },
+      "latency_ms": {
+        "embedding": 1629.48,
+        "retrieval_db": 6.94,
+        "rerank": 0.14,
+        "generation": 371.46,
+        "total": 2008.03
+      },
+      "answer": "After manager approval, employees may work remotely up to two days per week.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 169,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P04",
+      "question": "What is the yearly learning budget for a full-time employee?",
+      "insufficient": false,
+      "expected_document": "people-handbook.md",
+      "expected_chunk_ids": [
+        170
+      ],
+      "retrieved_chunk_ids": [
+        170,
+        167,
+        168,
+        173,
+        169,
+        175,
+        171,
+        172
+      ],
+      "reranked_chunk_ids": [
+        170,
+        173,
+        167,
+        169
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 170,
+          "distance": 0.2894608684249389,
+          "similarity": 0.7105391315750611
+        },
+        {
+          "chunk_id": 167,
+          "distance": 0.44736713798437466,
+          "similarity": 0.5526328620156253
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.4866189666617523,
+          "similarity": 0.5133810333382477
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.523834296644048,
+          "similarity": 0.476165703355952
+        },
+        {
+          "chunk_id": 169,
+          "distance": 0.5605780482292175,
+          "similarity": 0.43942195177078247
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5988544586051687,
+          "similarity": 0.4011455413948313
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.6078665256500244,
+          "similarity": 0.3921334743499756
+        },
+        {
+          "chunk_id": 172,
+          "distance": 0.6191860210410363,
+          "similarity": 0.38081397895896374
+        }
+      ],
+      "context_chunk_ids": [
+        170,
+        173,
+        167,
+        169
+      ],
+      "context_chars": 1905,
+      "provider_usage_tokens": {
+        "prompt_tokens": 471,
+        "completion_tokens": 41,
+        "total_tokens": 512
+      },
+      "latency_ms": {
+        "embedding": 8.66,
+        "retrieval_db": 9.82,
+        "rerank": 0.19,
+        "generation": 399.19,
+        "total": 417.91
+      },
+      "answer": "Each full-time employee has a yearly learning budget of 1200 currency units.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 170,
+          "document_name": "people-handbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P05",
+      "question": "Which account requires multi-factor authentication?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        174
+      ],
+      "retrieved_chunk_ids": [
+        174,
+        175,
+        171,
+        176,
+        164,
+        166,
+        177,
+        165
+      ],
+      "reranked_chunk_ids": [
+        174,
+        175,
+        171,
+        176
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 174,
+          "distance": 0.27486731330374614,
+          "similarity": 0.7251326866962539
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5143505896685964,
+          "similarity": 0.48564941033140363
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.5690833330154419,
+          "similarity": 0.4309166669845581
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.5753149284222495,
+          "similarity": 0.4246850715777505
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.5849613176251619,
+          "similarity": 0.4150386823748381
+        },
+        {
+          "chunk_id": 166,
+          "distance": 0.5903312398582183,
+          "similarity": 0.40966876014178166
+        },
+        {
+          "chunk_id": 177,
+          "distance": 0.5920299503677935,
+          "similarity": 0.4079700496322065
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.6004137575133108,
+          "similarity": 0.39958624248668917
+        }
+      ],
+      "context_chunk_ids": [
+        174,
+        175,
+        171,
+        176
+      ],
+      "context_chars": 2223,
+      "provider_usage_tokens": {
+        "prompt_tokens": 506,
+        "completion_tokens": 36,
+        "total_tokens": 542
+      },
+      "latency_ms": {
+        "embedding": 1439.66,
+        "retrieval_db": 6.61,
+        "rerank": 0.12,
+        "generation": 366.88,
+        "total": 1813.3
+      },
+      "answer": "All staff must enable multi-factor authentication on the corporate identity account.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 174,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P06",
+      "question": "How often must owners review production access?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        175
+      ],
+      "retrieved_chunk_ids": [
+        175,
+        164,
+        168,
+        172,
+        179,
+        171,
+        176,
+        173
+      ],
+      "reranked_chunk_ids": [
+        175,
+        172,
+        171,
+        176
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 175,
+          "distance": 0.32708551672531583,
+          "similarity": 0.6729144832746842
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.4332099984052714,
+          "similarity": 0.5667900015947286
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.5097259867517964,
+          "similarity": 0.49027401324820363
+        },
+        {
+          "chunk_id": 172,
+          "distance": 0.5172304213046993,
+          "similarity": 0.4827695786953007
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.5240602776968305,
+          "similarity": 0.4759397223031695
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.5256080314154598,
+          "similarity": 0.47439196858454025
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.5303087947911713,
+          "similarity": 0.4696912052088287
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.5304740460139241,
+          "similarity": 0.4695259539860759
+        }
+      ],
+      "context_chunk_ids": [
+        175,
+        172,
+        171,
+        176
+      ],
+      "context_chars": 2288,
+      "provider_usage_tokens": {
+        "prompt_tokens": 515,
+        "completion_tokens": 38,
+        "total_tokens": 553
+      },
+      "latency_ms": {
+        "embedding": 1391.78,
+        "retrieval_db": 6.71,
+        "rerank": 0.12,
+        "generation": 389.06,
+        "total": 1787.69
+      },
+      "answer": "Application owners must review production access every 90 days.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 175,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        },
+        {
+          "chunk_id": 176,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P07",
+      "question": "Within how long must a suspected security incident be reported?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        176
+      ],
+      "retrieved_chunk_ids": [
+        176,
+        179,
+        175,
+        164,
+        166,
+        165,
+        178,
+        180
+      ],
+      "reranked_chunk_ids": [
+        176,
+        179,
+        165,
+        178
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 176,
+          "distance": 0.2946951527491841,
+          "similarity": 0.7053048472508159
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.4284224084178848,
+          "similarity": 0.5715775915821152
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.43410399948925815,
+          "similarity": 0.5658960005107418
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.4559683532629939,
+          "similarity": 0.5440316467370061
+        },
+        {
+          "chunk_id": 166,
+          "distance": 0.47427107196935414,
+          "similarity": 0.5257289280306459
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.4821267415360424,
+          "similarity": 0.5178732584639576
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.48726083993130076,
+          "similarity": 0.5127391600686992
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.49140623160635544,
+          "similarity": 0.5085937683936446
+        }
+      ],
+      "context_chunk_ids": [
+        176,
+        179,
+        165,
+        178
+      ],
+      "context_chars": 2263,
+      "provider_usage_tokens": {
+        "prompt_tokens": 521,
+        "completion_tokens": 29,
+        "total_tokens": 550
+      },
+      "latency_ms": {
+        "embedding": 1569.54,
+        "retrieval_db": 6.66,
+        "rerank": 0.14,
+        "generation": 314.65,
+        "total": 1891.01
+      },
+      "answer": "within 30 minutes",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 176,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P08",
+      "question": "What classification applies to documents with customer identifiers?",
+      "insufficient": false,
+      "expected_document": "security-standard.md",
+      "expected_chunk_ids": [
+        177
+      ],
+      "retrieved_chunk_ids": [
+        177,
+        176,
+        175,
+        174,
+        171,
+        178,
+        173,
+        180
+      ],
+      "reranked_chunk_ids": [
+        177,
+        173,
+        180,
+        176
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 177,
+          "distance": 0.325522108158127,
+          "similarity": 0.674477891841873
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.5240447690246064,
+          "similarity": 0.4759552309753936
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5448661637625174,
+          "similarity": 0.4551338362374826
+        },
+        {
+          "chunk_id": 174,
+          "distance": 0.5494782073263991,
+          "similarity": 0.45052179267360093
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.551188588142395,
+          "similarity": 0.448811411857605
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.5607458642700955,
+          "similarity": 0.43925413572990446
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.564068936372587,
+          "similarity": 0.43593106362741296
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.5720240387887878,
+          "similarity": 0.4279759612112122
+        }
+      ],
+      "context_chunk_ids": [
+        177,
+        173,
+        180,
+        176
+      ],
+      "context_chars": 1998,
+      "provider_usage_tokens": {
+        "prompt_tokens": 464,
+        "completion_tokens": 31,
+        "total_tokens": 495
+      },
+      "latency_ms": {
+        "embedding": 10.75,
+        "retrieval_db": 8.34,
+        "rerank": 0.14,
+        "generation": 332.03,
+        "total": 351.28
+      },
+      "answer": "Documents containing customer identifiers are classified Confidential.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 177,
+          "document_name": "security-standard.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P09",
+      "question": "On which days are routine production deployments scheduled?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        164
+      ],
+      "retrieved_chunk_ids": [
+        164,
+        165,
+        166,
+        175,
+        179,
+        169,
+        170,
+        167
+      ],
+      "reranked_chunk_ids": [
+        164,
+        166,
+        175,
+        165
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 164,
+          "distance": 0.35789246025777033,
+          "similarity": 0.6421075397422297
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.47380325042026394,
+          "similarity": 0.5261967495797361
+        },
+        {
+          "chunk_id": 166,
+          "distance": 0.4806568197741884,
+          "similarity": 0.5193431802258116
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5435787413370963,
+          "similarity": 0.45642125866290373
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.5550848642143293,
+          "similarity": 0.44491513578567066
+        },
+        {
+          "chunk_id": 169,
+          "distance": 0.5560908119840811,
+          "similarity": 0.44390918801591894
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.5657260523569189,
+          "similarity": 0.43427394764308114
+        },
+        {
+          "chunk_id": 167,
+          "distance": 0.569497619241315,
+          "similarity": 0.43050238075868497
+        }
+      ],
+      "context_chunk_ids": [
+        164,
+        166,
+        175,
+        165
+      ],
+      "context_chars": 2249,
+      "provider_usage_tokens": {
+        "prompt_tokens": 539,
+        "completion_tokens": 49,
+        "total_tokens": 588
+      },
+      "latency_ms": {
+        "embedding": 7.39,
+        "retrieval_db": 7.81,
+        "rerank": 0.19,
+        "generation": 483.05,
+        "total": 498.47
+      },
+      "answer": "Routine production deployments are scheduled on Tuesday and Thursday between 10:00 and 16:00 local time.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 164,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P10",
+      "question": "What error-rate condition triggers a rollback?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        164
+      ],
+      "retrieved_chunk_ids": [
+        164,
+        165,
+        178,
+        168,
+        175,
+        179,
+        166,
+        180
+      ],
+      "reranked_chunk_ids": [
+        164,
+        165,
+        178,
+        168
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 164,
+          "distance": 0.41402143354306564,
+          "similarity": 0.5859785664569344
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.4675594173548103,
+          "similarity": 0.5324405826451897
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.5507225847744202,
+          "similarity": 0.44927741522557985
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.5702726794263874,
+          "similarity": 0.4297273205736126
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5752944782901945,
+          "similarity": 0.42470552170980547
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.5811495523480329,
+          "similarity": 0.4188504476519671
+        },
+        {
+          "chunk_id": 166,
+          "distance": 0.5838147257102057,
+          "similarity": 0.41618527428979435
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.5892395941136467,
+          "similarity": 0.4107604058863533
+        }
+      ],
+      "context_chunk_ids": [
+        164,
+        165,
+        178,
+        168
+      ],
+      "context_chars": 2586,
+      "provider_usage_tokens": {
+        "prompt_tokens": 591,
+        "completion_tokens": 44,
+        "total_tokens": 635
+      },
+      "latency_ms": {
+        "embedding": 19.53,
+        "retrieval_db": 8.79,
+        "rerank": 0.18,
+        "generation": 446.24,
+        "total": 474.76
+      },
+      "answer": "If the error rate exceeds five percent for ten consecutive minutes after a release, the release owner starts rollback.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 164,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P11",
+      "question": "When does the primary on-call engineer hand off?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        165
+      ],
+      "retrieved_chunk_ids": [
+        165,
+        178,
+        179,
+        164,
+        175,
+        166,
+        176,
+        167
+      ],
+      "reranked_chunk_ids": [
+        165,
+        164,
+        178,
+        166
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 165,
+          "distance": 0.2757395341551466,
+          "similarity": 0.7242604658448534
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.4438390132516805,
+          "similarity": 0.5561609867483195
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.45229771448956124,
+          "similarity": 0.5477022855104388
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.45547840825891595,
+          "similarity": 0.544521591741084
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5000423490925181,
+          "similarity": 0.4999576509074819
+        },
+        {
+          "chunk_id": 166,
+          "distance": 0.5130080352468256,
+          "similarity": 0.4869919647531744
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.5260970766080603,
+          "similarity": 0.47390292339193973
+        },
+        {
+          "chunk_id": 167,
+          "distance": 0.5320909600203583,
+          "similarity": 0.4679090399796417
+        }
+      ],
+      "context_chunk_ids": [
+        165,
+        164,
+        178,
+        166
+      ],
+      "context_chars": 2557,
+      "provider_usage_tokens": {
+        "prompt_tokens": 591,
+        "completion_tokens": 40,
+        "total_tokens": 631
+      },
+      "latency_ms": {
+        "embedding": 12.72,
+        "retrieval_db": 9.41,
+        "rerank": 0.24,
+        "generation": 455.39,
+        "total": 477.78
+      },
+      "answer": "The primary on-call engineer hands off at 09:00 every Monday.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 165,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P12",
+      "question": "At what time are PostgreSQL backups checked each morning?",
+      "insufficient": false,
+      "expected_document": "operations-runbook.md",
+      "expected_chunk_ids": [
+        166
+      ],
+      "retrieved_chunk_ids": [
+        166,
+        164,
+        165,
+        175,
+        176,
+        179,
+        180,
+        178
+      ],
+      "reranked_chunk_ids": [
+        166,
+        179,
+        164,
+        165
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 166,
+          "distance": 0.22719249529233831,
+          "similarity": 0.7728075047076617
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.4530887706053932,
+          "similarity": 0.5469112293946068
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.5157196703563949,
+          "similarity": 0.4842803296436051
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5192088948972254,
+          "similarity": 0.48079110510277456
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.5323398492817639,
+          "similarity": 0.4676601507182361
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.5391503849820317,
+          "similarity": 0.4608496150179683
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.5756928631618208,
+          "similarity": 0.4243071368381792
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.5818772825803302,
+          "similarity": 0.4181227174196698
+        }
+      ],
+      "context_chunk_ids": [
+        166,
+        179,
+        164,
+        165
+      ],
+      "context_chars": 2252,
+      "provider_usage_tokens": {
+        "prompt_tokens": 531,
+        "completion_tokens": 38,
+        "total_tokens": 569
+      },
+      "latency_ms": {
+        "embedding": 13.24,
+        "retrieval_db": 15.57,
+        "rerank": 0.26,
+        "generation": 413.99,
+        "total": 443.09
+      },
+      "answer": "PostgreSQL backups are checked every morning at 08:00.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 166,
+          "document_name": "operations-runbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P13",
+      "question": "What purchase amount requires department head and Finance approval?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        171
+      ],
+      "retrieved_chunk_ids": [
+        171,
+        170,
+        173,
+        164,
+        168,
+        174,
+        175,
+        178
+      ],
+      "reranked_chunk_ids": [
+        171,
+        170,
+        173,
+        168
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 171,
+          "distance": 0.3237473737440326,
+          "similarity": 0.6762526262559674
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.4292485206492178,
+          "similarity": 0.5707514793507822
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.4704032048246406,
+          "similarity": 0.5295967951753594
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.5522654408052684,
+          "similarity": 0.4477345591947316
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.5603201533126916,
+          "similarity": 0.4396798466873084
+        },
+        {
+          "chunk_id": 174,
+          "distance": 0.5618206239305226,
+          "similarity": 0.43817937606947743
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.564962837991821,
+          "similarity": 0.435037162008179
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.5745597165391565,
+          "similarity": 0.4254402834608435
+        }
+      ],
+      "context_chunk_ids": [
+        171,
+        170,
+        173,
+        168
+      ],
+      "context_chars": 2290,
+      "provider_usage_tokens": {
+        "prompt_tokens": 531,
+        "completion_tokens": 47,
+        "total_tokens": 578
+      },
+      "latency_ms": {
+        "embedding": 15.99,
+        "retrieval_db": 8.8,
+        "rerank": 0.26,
+        "generation": 488.54,
+        "total": 513.62
+      },
+      "answer": "Purchases above 5000 currency units require approval from the department head and Finance before an order is placed.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 171,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P14",
+      "question": "What must a supplier processing customer data complete before contract signature?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        171
+      ],
+      "retrieved_chunk_ids": [
+        171,
+        172,
+        173,
+        180,
+        179,
+        175,
+        177,
+        178
+      ],
+      "reranked_chunk_ids": [
+        171,
+        172,
+        173,
+        179
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 171,
+          "distance": 0.34597881484283755,
+          "similarity": 0.6540211851571625
+        },
+        {
+          "chunk_id": 172,
+          "distance": 0.4129128806046821,
+          "similarity": 0.5870871193953179
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.47832577903879414,
+          "similarity": 0.5216742209612059
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.5064054712282489,
+          "similarity": 0.49359452877175114
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.5158378462984711,
+          "similarity": 0.48416215370152893
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5201976525076644,
+          "similarity": 0.47980234749233563
+        },
+        {
+          "chunk_id": 177,
+          "distance": 0.5211243814158565,
+          "similarity": 0.4788756185841435
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.526199946236507,
+          "similarity": 0.473800053763493
+        }
+      ],
+      "context_chunk_ids": [
+        171,
+        172,
+        173,
+        179
+      ],
+      "context_chars": 2278,
+      "provider_usage_tokens": {
+        "prompt_tokens": 516,
+        "completion_tokens": 37,
+        "total_tokens": 553
+      },
+      "latency_ms": {
+        "embedding": 9.51,
+        "retrieval_db": 10.06,
+        "rerank": 0.25,
+        "generation": 383.58,
+        "total": 403.43
+      },
+      "answer": "A supplier processing customer data must complete a security review before contract signature.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 171,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P15",
+      "question": "How long are signed supplier contracts retained after expiry?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        172
+      ],
+      "retrieved_chunk_ids": [
+        172,
+        173,
+        175,
+        168,
+        180,
+        171,
+        170,
+        167
+      ],
+      "reranked_chunk_ids": [
+        172,
+        173,
+        180,
+        175
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 172,
+          "distance": 0.22686150945881678,
+          "similarity": 0.7731384905411832
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.4305220420101137,
+          "similarity": 0.5694779579898863
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.47356406957218034,
+          "similarity": 0.5264359304278197
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.4809931561963149,
+          "similarity": 0.5190068438036851
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.5115147198692791,
+          "similarity": 0.4884852801307209
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.5208103619556895,
+          "similarity": 0.4791896380443105
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.5216019011020868,
+          "similarity": 0.4783980988979132
+        },
+        {
+          "chunk_id": 167,
+          "distance": 0.5274081744527288,
+          "similarity": 0.4725918255472712
+        }
+      ],
+      "context_chunk_ids": [
+        172,
+        173,
+        180,
+        175
+      ],
+      "context_chars": 1950,
+      "provider_usage_tokens": {
+        "prompt_tokens": 471,
+        "completion_tokens": 41,
+        "total_tokens": 512
+      },
+      "latency_ms": {
+        "embedding": 16.57,
+        "retrieval_db": 10.18,
+        "rerank": 0.13,
+        "generation": 410.51,
+        "total": 437.41
+      },
+      "answer": "Signed supplier contracts are stored in the legal repository for seven years after expiry.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 172,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        },
+        {
+          "chunk_id": 173,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P16",
+      "question": "Within how many days must approved business expenses be submitted?",
+      "insufficient": false,
+      "expected_document": "procurement-guide.md",
+      "expected_chunk_ids": [
+        173
+      ],
+      "retrieved_chunk_ids": [
+        173,
+        170,
+        175,
+        171,
+        164,
+        167,
+        168,
+        178
+      ],
+      "reranked_chunk_ids": [
+        173,
+        170,
+        171,
+        175
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 173,
+          "distance": 0.3011606550828274,
+          "similarity": 0.6988393449171726
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.38875989444966685,
+          "similarity": 0.6112401055503331
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.43997927188929475,
+          "similarity": 0.5600207281107052
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.4683069669648522,
+          "similarity": 0.5316930330351478
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.4827388175543562,
+          "similarity": 0.5172611824456438
+        },
+        {
+          "chunk_id": 167,
+          "distance": 0.48589797191897,
+          "similarity": 0.51410202808103
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.4927583177027397,
+          "similarity": 0.5072416822972603
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.49889554007639936,
+          "similarity": 0.5011044599236006
+        }
+      ],
+      "context_chunk_ids": [
+        173,
+        170,
+        171,
+        175
+      ],
+      "context_chars": 2259,
+      "provider_usage_tokens": {
+        "prompt_tokens": 532,
+        "completion_tokens": 31,
+        "total_tokens": 563
+      },
+      "latency_ms": {
+        "embedding": 10.99,
+        "retrieval_db": 9.34,
+        "rerank": 0.19,
+        "generation": 339.95,
+        "total": 360.5
+      },
+      "answer": "within 45 days of purchase",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 173,
+          "document_name": "procurement-guide.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P17",
+      "question": "What is the first human response target for priority-one support tickets?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        178
+      ],
+      "retrieved_chunk_ids": [
+        178,
+        179,
+        180,
+        165,
+        164,
+        176,
+        175,
+        171
+      ],
+      "reranked_chunk_ids": [
+        178,
+        179,
+        180,
+        176
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 178,
+          "distance": 0.3032264763303444,
+          "similarity": 0.6967735236696556
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.5263783162734993,
+          "similarity": 0.4736216837265007
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.5734361735182234,
+          "similarity": 0.4265638264817766
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.5739108645413955,
+          "similarity": 0.4260891354586045
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.6168754184056366,
+          "similarity": 0.38312458159436336
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.6468400396823385,
+          "similarity": 0.3531599603176615
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.6473679715084977,
+          "similarity": 0.3526320284915023
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.6594696191449738,
+          "similarity": 0.3405303808550262
+        }
+      ],
+      "context_chunk_ids": [
+        178,
+        179,
+        180,
+        176
+      ],
+      "context_chars": 2245,
+      "provider_usage_tokens": {
+        "prompt_tokens": 517,
+        "completion_tokens": 39,
+        "total_tokens": 556
+      },
+      "latency_ms": {
+        "embedding": 3310.56,
+        "retrieval_db": 7.05,
+        "rerank": 0.13,
+        "generation": 626.79,
+        "total": 3944.55
+      },
+      "answer": "A support agent confirms the impact and assigns an incident lead before proposing a fix.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 178,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P18",
+      "question": "When does support escalate an unresolved priority-one issue to engineering?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        178
+      ],
+      "retrieved_chunk_ids": [
+        178,
+        179,
+        165,
+        180,
+        164,
+        166,
+        176,
+        175
+      ],
+      "reranked_chunk_ids": [
+        178,
+        179,
+        180,
+        164
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 178,
+          "distance": 0.3241059360754993,
+          "similarity": 0.6758940639245007
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.38608136508907365,
+          "similarity": 0.6139186349109264
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.4452817039674347,
+          "similarity": 0.5547182960325653
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.5433394753910954,
+          "similarity": 0.4566605246089046
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.5457629940266673,
+          "similarity": 0.4542370059733327
+        },
+        {
+          "chunk_id": 166,
+          "distance": 0.5601167226114872,
+          "similarity": 0.43988327738851285
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.5793365221396028,
+          "similarity": 0.42066347786039715
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5806583079536877,
+          "similarity": 0.41934169204631233
+        }
+      ],
+      "context_chunk_ids": [
+        178,
+        179,
+        180,
+        164
+      ],
+      "context_chars": 2540,
+      "provider_usage_tokens": {
+        "prompt_tokens": 580,
+        "completion_tokens": 48,
+        "total_tokens": 628
+      },
+      "latency_ms": {
+        "embedding": 11.98,
+        "retrieval_db": 9.05,
+        "rerank": 0.18,
+        "generation": 473.84,
+        "total": 495.07
+      },
+      "answer": "If a priority-one issue remains unresolved after 60 minutes, the support lead escalates to the on-call engineering lead.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 178,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P19",
+      "question": "How often are customers updated during a priority-one incident?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        179
+      ],
+      "retrieved_chunk_ids": [
+        179,
+        178,
+        165,
+        164,
+        176,
+        166,
+        180,
+        175
+      ],
+      "reranked_chunk_ids": [
+        179,
+        178,
+        180,
+        165
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 179,
+          "distance": 0.2581354754607518,
+          "similarity": 0.7418645245392482
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.33138360481020923,
+          "similarity": 0.6686163951897908
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.3973641934367178,
+          "similarity": 0.6026358065632822
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.4110700382077729,
+          "similarity": 0.5889299617922271
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.41737693263855613,
+          "similarity": 0.5826230673614439
+        },
+        {
+          "chunk_id": 166,
+          "distance": 0.44052900341126866,
+          "similarity": 0.5594709965887313
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.4515377177413298,
+          "similarity": 0.5484622822586702
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.4536857552587704,
+          "similarity": 0.5463142447412296
+        }
+      ],
+      "context_chunk_ids": [
+        179,
+        178,
+        180,
+        165
+      ],
+      "context_chars": 2229,
+      "provider_usage_tokens": {
+        "prompt_tokens": 521,
+        "completion_tokens": 45,
+        "total_tokens": 566
+      },
+      "latency_ms": {
+        "embedding": 10.47,
+        "retrieval_db": 10.14,
+        "rerank": 0.23,
+        "generation": 453.74,
+        "total": 474.6
+      },
+      "answer": "During a priority-one incident, support sends affected customers an update every 30 minutes until mitigation is complete.",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 179,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "P20",
+      "question": "When is the customer satisfaction survey sent after ticket closure?",
+      "insufficient": false,
+      "expected_document": "support-playbook.md",
+      "expected_chunk_ids": [
+        180
+      ],
+      "retrieved_chunk_ids": [
+        180,
+        178,
+        175,
+        179,
+        164,
+        173,
+        176,
+        165
+      ],
+      "reranked_chunk_ids": [
+        180,
+        178,
+        175,
+        179
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 180,
+          "distance": 0.24780254079087127,
+          "similarity": 0.7521974592091287
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.4098971300764864,
+          "similarity": 0.5901028699235136
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.44471738730951693,
+          "similarity": 0.5552826126904831
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.466145900854223,
+          "similarity": 0.533854099145777
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.47905800924569486,
+          "similarity": 0.5209419907543051
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.4988960917158287,
+          "similarity": 0.5011039082841713
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.5152832196791648,
+          "similarity": 0.4847167803208352
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.5389986312986162,
+          "similarity": 0.46100136870138375
+        }
+      ],
+      "context_chunk_ids": [
+        180,
+        178,
+        175,
+        179
+      ],
+      "context_chars": 2222,
+      "provider_usage_tokens": {
+        "prompt_tokens": 519,
+        "completion_tokens": 28,
+        "total_tokens": 547
+      },
+      "latency_ms": {
+        "embedding": 17.39,
+        "retrieval_db": 8.35,
+        "rerank": 0.14,
+        "generation": 316.45,
+        "total": 342.36
+      },
+      "answer": "24小时后",
+      "abstained": false,
+      "citation_checks": [
+        {
+          "chunk_id": 180,
+          "document_name": "support-playbook.md",
+          "exists": true,
+          "in_scope": true
+        }
+      ],
+      "hit": true,
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "expected_document_cited": true,
+      "refusal_correct": null
+    },
+    {
+      "id": "N01",
+      "question": "What is the CEO's private phone number?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        165,
+        175,
+        174,
+        179,
+        164,
+        178,
+        173,
+        169
+      ],
+      "reranked_chunk_ids": [
+        175,
+        179,
+        164,
+        178
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 165,
+          "distance": 0.5703736673894721,
+          "similarity": 0.42962633261052785
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.5744685264342302,
+          "similarity": 0.4255314735657698
+        },
+        {
+          "chunk_id": 174,
+          "distance": 0.5874240185861108,
+          "similarity": 0.4125759814138892
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.599924463042678,
+          "similarity": 0.400075536957322
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.6000903665992421,
+          "similarity": 0.3999096334007579
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.600727474949578,
+          "similarity": 0.399272525050422
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.6217173032086188,
+          "similarity": 0.37828269679138116
+        },
+        {
+          "chunk_id": 169,
+          "distance": 0.6320674858012787,
+          "similarity": 0.3679325141987213
+        }
+      ],
+      "context_chunk_ids": [
+        175,
+        179,
+        164,
+        178
+      ],
+      "context_chars": 2551,
+      "provider_usage_tokens": {
+        "prompt_tokens": 581,
+        "completion_tokens": 38,
+        "total_tokens": 619
+      },
+      "latency_ms": {
+        "embedding": 1472.92,
+        "retrieval_db": 6.82,
+        "rerank": 0.13,
+        "generation": 383.71,
+        "total": 1863.6
+      },
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "citation_checks": [],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": true
+    },
+    {
+      "id": "N02",
+      "question": "What is the data retention period for customer call recordings?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        172,
+        176,
+        177,
+        180,
+        179,
+        175,
+        173,
+        178
+      ],
+      "reranked_chunk_ids": [
+        177,
+        172,
+        173,
+        178
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 172,
+          "distance": 0.3959797620773272,
+          "similarity": 0.6040202379226728
+        },
+        {
+          "chunk_id": 176,
+          "distance": 0.4436235763885483,
+          "similarity": 0.5563764236114517
+        },
+        {
+          "chunk_id": 177,
+          "distance": 0.46845902516408133,
+          "similarity": 0.5315409748359187
+        },
+        {
+          "chunk_id": 180,
+          "distance": 0.4689884539267196,
+          "similarity": 0.5310115460732804
+        },
+        {
+          "chunk_id": 179,
+          "distance": 0.47027734099165464,
+          "similarity": 0.5297226590083454
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.4718000078797232,
+          "similarity": 0.5281999921202768
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.49777910047142315,
+          "similarity": 0.5022208995285768
+        },
+        {
+          "chunk_id": 178,
+          "distance": 0.503761233468499,
+          "similarity": 0.496238766531501
+        }
+      ],
+      "context_chunk_ids": [
+        177,
+        172,
+        173,
+        178
+      ],
+      "context_chars": 2323,
+      "provider_usage_tokens": {
+        "prompt_tokens": 518,
+        "completion_tokens": 37,
+        "total_tokens": 555
+      },
+      "latency_ms": {
+        "embedding": 10.21,
+        "retrieval_db": 8.73,
+        "rerank": 0.25,
+        "generation": 388.51,
+        "total": 407.72
+      },
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "citation_checks": [],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": true
+    },
+    {
+      "id": "N03",
+      "question": "How many paid holidays do independent contractors receive?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        167,
+        168,
+        173,
+        169,
+        170,
+        165,
+        172,
+        175
+      ],
+      "reranked_chunk_ids": [
+        167,
+        169,
+        170,
+        168
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 167,
+          "distance": 0.4579631290611451,
+          "similarity": 0.5420368709388549
+        },
+        {
+          "chunk_id": 168,
+          "distance": 0.5311438907380353,
+          "similarity": 0.46885610926196475
+        },
+        {
+          "chunk_id": 173,
+          "distance": 0.5404096841810958,
+          "similarity": 0.4595903158189042
+        },
+        {
+          "chunk_id": 169,
+          "distance": 0.541727319338059,
+          "similarity": 0.45827268066194105
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.5707622810061659,
+          "similarity": 0.4292377189938341
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.6162630361256318,
+          "similarity": 0.3837369638743682
+        },
+        {
+          "chunk_id": 172,
+          "distance": 0.6297646672234609,
+          "similarity": 0.3702353327765391
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.634347775967252,
+          "similarity": 0.365652224032748
+        }
+      ],
+      "context_chunk_ids": [
+        167,
+        169,
+        170,
+        168
+      ],
+      "context_chars": 1926,
+      "provider_usage_tokens": {
+        "prompt_tokens": 466,
+        "completion_tokens": 35,
+        "total_tokens": 501
+      },
+      "latency_ms": {
+        "embedding": 44.25,
+        "retrieval_db": 10.34,
+        "rerank": 0.16,
+        "generation": 390.74,
+        "total": 445.52
+      },
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "citation_checks": [],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": true
+    },
+    {
+      "id": "N04",
+      "question": "What quantum encryption policy applies to personal devices?",
+      "insufficient": true,
+      "expected_document": null,
+      "expected_chunk_ids": [],
+      "retrieved_chunk_ids": [
+        174,
+        177,
+        175,
+        171,
+        170,
+        165,
+        172,
+        164
+      ],
+      "reranked_chunk_ids": [
+        170,
+        172,
+        174,
+        175
+      ],
+      "retrieved_scores": [
+        {
+          "chunk_id": 174,
+          "distance": 0.5094112337685206,
+          "similarity": 0.4905887662314794
+        },
+        {
+          "chunk_id": 177,
+          "distance": 0.5660418553152498,
+          "similarity": 0.43395814468475025
+        },
+        {
+          "chunk_id": 175,
+          "distance": 0.6004377006179923,
+          "similarity": 0.3995622993820077
+        },
+        {
+          "chunk_id": 171,
+          "distance": 0.6259330734054396,
+          "similarity": 0.3740669265945604
+        },
+        {
+          "chunk_id": 170,
+          "distance": 0.6362670714060938,
+          "similarity": 0.36373292859390616
+        },
+        {
+          "chunk_id": 165,
+          "distance": 0.6407850430992162,
+          "similarity": 0.35921495690078376
+        },
+        {
+          "chunk_id": 172,
+          "distance": 0.6536756753921484,
+          "similarity": 0.34632432460785156
+        },
+        {
+          "chunk_id": 164,
+          "distance": 0.6539224283076017,
+          "similarity": 0.3460775716923983
+        }
+      ],
+      "context_chunk_ids": [
+        170,
+        172,
+        174,
+        175
+      ],
+      "context_chars": 1928,
+      "provider_usage_tokens": {
+        "prompt_tokens": 458,
+        "completion_tokens": 35,
+        "total_tokens": 493
+      },
+      "latency_ms": {
+        "embedding": 11.01,
+        "retrieval_db": 9.25,
+        "rerank": 0.13,
+        "generation": 353.53,
+        "total": 373.94
+      },
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "citation_checks": [],
+      "hit": null,
+      "recall": null,
+      "reciprocal_rank": 0.0,
+      "expected_document_cited": null,
+      "refusal_correct": true
+    }
+  ]
+}

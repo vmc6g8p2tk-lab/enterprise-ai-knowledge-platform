@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from app.evaluate import DEFAULT_CORPUS, compute_metrics, load_cases, run_evaluation
+from app.evaluate import DEFAULT_CORPUS, TimedEmbedding, compute_metrics, load_cases, run_evaluation
 from app.providers import ExtractiveAnswer, HashEmbedding
 from app.rag import RetrievalConfig
 
@@ -12,6 +12,16 @@ def test_corpus_has_twenty_source_backed_questions():
     assert len([case for case in cases if case.get("insufficient")]) == 4
     assert len(documents) == 5
     assert all(Path(path).is_file() for path in documents.values())
+
+
+def test_timed_embedding_preserves_provider_identity_and_batch_size():
+    wrapped = TimedEmbedding(HashEmbedding(64))
+    assert wrapped.provider_name == "hash"
+    assert wrapped.model_id == "hash-v1"
+    assert wrapped.dimensions == 64
+    assert len(wrapped.embed_batch(["one", "two"])) == 2
+    assert wrapped.calls[0]["texts"] == 2
+    assert wrapped.calls[0]["elapsed_ms"] >= 0
 
 
 def test_metric_denominators_and_reciprocal_rank():

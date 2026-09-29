@@ -4,7 +4,9 @@ import argparse
 import hashlib
 import json
 import os
+import time
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 import psycopg
@@ -14,6 +16,33 @@ from .rag import RetrievalConfig, chat, process_document
 
 
 DEFAULT_CORPUS = Path(__file__).resolve().parents[2] / "docs" / "evaluation"
+
+
+class TimedEmbedding(EmbeddingProvider):
+    """Record actual embedding call sizes and wall time during evaluation."""
+
+    def __init__(self, delegate: EmbeddingProvider):
+        self.delegate = delegate
+        self.calls: list[dict] = []
+
+    @property
+    def provider_name(self) -> str:
+        return self.delegate.provider_name
+
+    @property
+    def model_id(self) -> str:
+        return self.delegate.model_id
+
+    @property
+    def dimensions(self) -> int:
+        return self.delegate.dimensions
+
+    def embed_batch(self, texts: list[str]) -> list[list[float]]:
+        started = time.perf_counter()
+        result = self.delegate.embed_batch(texts)
+        self.calls.append({"texts": len(texts),
+                           "elapsed_ms": round((time.perf_counter() - started) * 1000, 2)})
+        return result
 
 
 def load_cases(directory: Path) -> tuple[list[dict], dict[str, Path]]:
@@ -73,6 +102,7 @@ def compute_metrics(rows: list[dict]) -> dict:
 def run_evaluation(directory: Path, db_url: str, embedder: EmbeddingProvider,
                    answerer: AnswerProvider, config: RetrievalConfig) -> dict:
     cases, documents = load_cases(directory)
+    timed_embedder = TimedEmbedding(embedder)
     kb_id = str(uuid.uuid4())
     doc_ids = {name: str(uuid.uuid4()) for name in documents}
     old_upload_root = os.environ.get("UPLOAD_DIR")
@@ -90,8 +120,13 @@ def run_evaluation(directory: Path, db_url: str, embedder: EmbeddingProvider,
                     "VALUES(%s,%s,%s,'text/markdown',%s)",
                     (doc_ids[name], kb_id, name, str(path.resolve())))
         inserted = True
-        for document_id in doc_ids.values():
-            process_document(document_id, embedder)
+        document_processing = []
+        for name, document_id in doc_ids.items():
+            started = time.perf_counter()
+            chunk_count = process_document(document_id, timed_embedder)
+            document_processing.append({"document_name": name, "chunks": chunk_count,
+                                        "elapsed_ms": round((time.perf_counter() - started) * 1000, 2)})
+        ingestion_batches = list(timed_embedder.calls)
         with psycopg.connect(db_url) as conn:
             chunk_rows = conn.execute(
                 "SELECT c.id,c.document_id,c.content FROM document_chunks c "
@@ -99,7 +134,8 @@ def run_evaluation(directory: Path, db_url: str, embedder: EmbeddingProvider,
                 (kb_id,)).fetchall()
         results = []
         for case in cases:
-            response = chat(kb_id, case["question"], embedder, answerer, config=config, debug=True)
+            response = chat(kb_id, case["question"], timed_embedder, answerer,
+                            config=config, debug=True)
             retrieved_ids = [item["chunk_id"] for item in response["retrieval"]["initial_top_k"]]
             insufficient = bool(case.get("insufficient", False))
             expected_ids: set[int] = set()
@@ -125,11 +161,14 @@ def run_evaluation(directory: Path, db_url: str, embedder: EmbeddingProvider,
                               and actual[2] == citation["content"])
                 citation_checks.append({
                     "chunk_id": citation["chunk_id"], "document_name": citation["document_name"],
+                    "content": citation["content"],
                     "exists": exists, "in_scope": bool(exists and str(actual[3]) == kb_id),
                 })
             results.append({
                 "id": case["id"], "question": case["question"], "insufficient": insufficient,
                 "expected_document": case.get("expected_document"),
+                "expected_reference": case.get("expected_reference"),
+                "reference_answer": case.get("reference_answer"),
                 "expected_chunk_ids": sorted(expected_ids),
                 "retrieved_chunk_ids": retrieved_ids,
                 "reranked_chunk_ids": [item["chunk_id"] for item in response["retrieval"]["reranked"]],
@@ -153,10 +192,14 @@ def run_evaluation(directory: Path, db_url: str, embedder: EmbeddingProvider,
                                     if insufficient else None),
             })
         return {
+            "run_utc": datetime.now(timezone.utc).isoformat(),
             "corpus_sha256": corpus_sha256(directory),
             "embedding_provider": embedder.provider_name,
             "embedding_model": embedder.model_id,
             "answer_provider": answerer.provider_name,
+            "answer_model": answerer.model_id,
+            "document_processing": document_processing,
+            "ingestion_embedding_calls": ingestion_batches,
             "config": {"top_k": config.top_k, "rerank_k": config.rerank_k,
                        "max_context_chars": config.max_context_chars},
             "metrics": compute_metrics(results),

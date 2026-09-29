@@ -1,5 +1,25 @@
 # Test results
 
+## Phase 2.5 local real-model acceptance (2026-09-30)
+
+The opt-in five-service Compose stack used real PostgreSQL/pgvector, Go, Python, React and a GPU Ollama container. BGE-M3 and Qwen2.5 were **actual local models**, not the development hash/extractive providers. Cloud OpenAI-compatible calls remain **NOT TESTED**; no cloud key was supplied. No skipped or unrun check is counted as passed.
+
+| Check | Actual outcome |
+| --- | --- |
+| GPU access | `nvidia-smi` inside a temporary `--gpus all` Docker container reported GeForce RTX 4080, 16,376 MiB total VRAM. Ollama `ps` reported both selected models as `100% GPU`. |
+| Real embedding shape/batch | Local `/v1/embeddings` returned two 1024-dimensional BGE-M3 vectors in 187.1 ms. Final corpus ingestion used batch calls of 3, 4, 3, 4 and 3 chunks; per-call times are in the raw JSON. |
+| Main DB profile switch | Observed 0 KB, 0 documents, 0 chunks. Maintenance dry-run showed hash-v1/vector(1536) to BGE-M3/vector(1024); build completed and direct SQL confirmed `vector(1024)`, matching embedding profile, with 0 chunks. No old main-DB vectors existed to rebuild. |
+| Nonempty real-vector reindex/rollback | `python -m scripts.check_local_reindex` PASS: one public document/four hash chunks in an isolated DB, actual BGE-M3 rebuild to 1024 dimensions in 311.47 ms, rollback to four 1536-dimensional hash chunks, temporary DB removed. |
+| Real LLM smoke | Qwen2.5 7B Q4_K_M produced a grounded answer with context index `[0]` and token usage; the cold request took 28,481.2 ms including model load. |
+| Real 20+4 RAG evaluation | Fixed-config final raw run: Hit@8, Recall@8, MRR = 1.00 each; 21/21 DB-valid, in-scope citations; 20/20 expected documents cited; 4/4 unsupported refusals. [Raw JSON](evaluation/results/local_real_final.json). |
+| Case-by-case content review | [Assistant review](evaluation/MANUAL_REVIEW_LOCAL.md) of final P01–P10: 10/10 answers had at least one supporting cited chunk; 9/10 cases had every returned chunk directly supporting the answer. This is subjective, not an automated or independent human metric. |
+| Full Python suite | `20 passed in 4.01s`. `TEST_DATABASE_URL` pointed to separate vector(1536) `knowledge_test` for hash tests; `E2E_DATABASE_URL` pointed to the main vector(1024) database; `E2E_API_URL` pointed to the live Go API. Full-stack real-model upload/chat/isolation/citation tests executed, not skipped. |
+| Go tests / vet / race | `go test -count=1 ./...`, `go vet ./...`, and `CGO_ENABLED=1 go test -race -count=1 ./...` all PASS in a Linux Go 1.24 Alpine container with GCC/musl. Race scope is the existing Go unit tests, not a load test. |
+| Frontend | `npm run build` PASS (TypeScript + Vite). |
+| Final Compose health | `docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml ps`: postgres, backend, ai-service, frontend and Ollama all running/healthy. |
+
+The initial real runs had extra, non-supporting citations in P01, P06 and P15 despite 100% database validity. A minimal prompt instruction was added and results were rerun without altering the corpus. The final fixed-seed run still over-cited P06; the raw before/after files and review retain this failure. Warm latency and GPU samples are reported with their separate run conditions in [RAG_EVALUATION.md](RAG_EVALUATION.md). These are local single-request observations, not production or concurrent-capacity claims.
+
 ## Phase 2 final verification (2026-09-30)
 
 These results are from the existing local Docker Desktop project. PostgreSQL/pgvector and the four Compose services were real; embedding/answer providers were the deterministic development implementations. No `OPENAI_API_KEY` was present, so live embedding, live LLM, model latency, cost and semantic answer quality are **not verified**.
