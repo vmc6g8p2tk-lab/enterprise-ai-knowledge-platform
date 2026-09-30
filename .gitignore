@@ -22,6 +22,12 @@ coverage/
 uploads/
 models/
 ollama_models/
+model_cache/
+.cache/
+postgres_data/
+pgdata/
+*.dump
+*.bak
 *.gguf
 *.safetensors
 *.pt

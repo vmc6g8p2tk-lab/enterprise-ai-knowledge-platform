@@ -14,6 +14,10 @@ Eight parameterized invalid/injected planner plans were rejected: `execute_shell
 
 These tests exercise **tool execution and data isolation**, not a complete prompt-injection defense or automatic proof of answer faithfulness.
 
+## Phase 4 release recheck
+
+The final Python suite reran the invalid-plan, scope and live RBAC cases against real PostgreSQL and the local-model Compose stack. A fresh [12-case Agent run](evaluation/results/phase4_agent_security.json) produced ten expected HTTP 200 responses, an outsider 404 and a cross-KB injection 403; 9/9 returned citations matched in-scope database rows. The injected document led only to an allowlisted search tool. The final log scan of 144 current backend/AI-service lines found zero occurrences of `Authorization:`, `Bearer `, password assignments, secret-variable assignments or the checked full-fixture body markers; the configured secret values were also compared in memory and absent. This checks those observed logs and patterns, not all possible future log paths.
+
 ## Not validated / known limits
 
 There is no login rate limit, email verification, MFA, token revocation list, audit-log storage, public TLS termination, malicious-file scanning, OCR sandbox, independent penetration test, or multi-tenant deployment review. A prompt can still affect generated wording or tool selection within the allowlist. A valid citation only proves provenance; it does not prove all claims in an answer. Local Compose ports bind to loopback; expose them beyond the workstation only after additional controls.

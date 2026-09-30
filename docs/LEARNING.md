@@ -1,5 +1,7 @@
 # Learning notes
 
+The Phase 1/2 rows below are historical implementation notes. Phase 3 replaced synchronous ingestion with durable jobs; the later sections and [INTERVIEW.md](INTERVIEW.md) describe current behavior.
+
 | Module | Problem and core idea | Choice and alternative | Limitation | Interview question and answer direction |
 | --- | --- | --- | --- | --- |
 | Go API | Keep public business operations separate from model work. It validates input, persists metadata and forwards internal tasks. | Standard `net/http` plus pgx; a framework could reduce boilerplate. | Synchronous ingestion ties up a request. | **Why split Go and Python?** Go owns the business API; Python has mature parsing/model tooling. State that the network boundary adds latency and failure modes. |
@@ -80,3 +82,17 @@ The first end-to-end upload failed although the Go process had saved the file: i
 5. **Drawbacks:** Counters reset on restart and there is no historical store or alerting. A 24-case local latency comparison can be confounded by GPU activity.
 6. **Likely interview question:** “Did Phase 3 make RAG three times slower?”
 7. **Answer:** The Phase 3 evaluation bypassed the new Go code. Median generation time rose from roughly 351 to 922 ms while retrieval stayed near 10–12 ms and token counts barely changed. GPU use was high outside requests, but attribution was unavailable. I would repeat under controlled idle-GPU conditions before claiming a causal regression.
+
+## Phase 4: quality and release lessons
+
+### Separate source correctness from answer correctness
+
+The Phase 3 Agent case answered only `30` while its genuine cited passage said `within 30 minutes of discovery`. Retrieval, context assembly and citation mapping had worked; the omission happened in model generation. A single general system-prompt sentence now asks the model to retain units and conditions for quantities, times and money. A mock test protects the prompt contract, and the unchanged real-model incident question checks the observable answer. This does not guarantee every future numeric answer will be complete. An alternative is a structured numeric fact extractor, but it would need language- and unit-aware validation and could introduce false corrections.
+
+### Citation relevance is a separate regression
+
+Every Phase 4 citation matched a real in-scope row, yet a fixture-specific exact-reference check flagged four of 24 citations in the 20+4 evaluation. Manual inspection found two citations with equivalent overlapping wording and two weak or unrelated extras. This demonstrates why a lexical fixture oracle can overflag valid paraphrases while structural provenance can miss unsupported extras. A stronger approach would independently annotate claim-to-passage support on a broader corpus. The project records the failures rather than filtering citations by a brittle string rule.
+
+### Measure latency under stated conditions
+
+The Phase 4 run warmed both models and executed 30 ordinary RAG plus 20 Agent requests sequentially. Median service time was 448.14 ms for RAG and 987.85 ms for Agent on this workstation. Earlier Phase 3 RAG was slower, but the runs had different GPU states and Phase 4's prompt was clarified. These figures are not a strict before/after performance optimization or a concurrent capacity result. The Agent total includes a JSON planning call, so comparing its final-answer LLM time alone to full RAG latency is misleading. See [FINAL_VALIDATION.md](FINAL_VALIDATION.md) and the raw records.

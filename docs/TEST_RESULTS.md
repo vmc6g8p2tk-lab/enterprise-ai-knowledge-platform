@@ -88,3 +88,22 @@ The full details, actual failed-then-fixed cases and timing bounds are in [PHASE
 | Metrics | Both Go and Python `/metrics` returned scrape text with observed live counters/durations; Go queue pending was 0 after drain. |
 
 **Not validated:** production traffic, multi-host HA, cloud model, native function calling, independent security review or stable concurrent inference capacity. The Phase 3 RAG latency run was slower than Phase 2.5; stage data points to model generation and an observed busy GPU, not Go auth/queue code. See the measured values and uncertainty in [RAG_EVALUATION.md](RAG_EVALUATION.md).
+
+## Phase 4 final regression — local real-model Compose, 2026-09-30
+
+The current release-preparation result is in [FINAL_VALIDATION.md](FINAL_VALIDATION.md). The unchanged 20+4 fixture, 30 ordinary RAG/20 Agent sequential latency samples, 12 security Agent cases, raw telemetry and all environment corrections are linked there.
+
+| Check | Actual result |
+| --- | --- |
+| Python `python -m pytest -q tests` | **34 passed in 16.32s**, no skips, on final read-only repository-root mount. Two benign pytest cache-write warnings due to that mount. |
+| Go `go test -count=1 -v ./...` | PASS with real PostgreSQL Worker concurrency/retry/lease tests visibly executed. |
+| Go `go vet ./...` | PASS, exit 0. |
+| `CGO_ENABLED=1 go test -race -count=1 -v ./...` | PASS with real Worker tests executed. |
+| Frontend `npm run build` | PASS, TypeScript and Vite v6.4.3. |
+| Compose | PostgreSQL, Go API, Python AI service, React frontend and Ollama all healthy. |
+| Full 20+4 local-model evaluation | Hit@8/Recall@8/MRR 1.00 each; 24/24 genuine in-scope citations; 20/20 positive cases with expected evidence cited; 4/4 unsupported refusals. Four citations lacked the exact expected phrase, two of which were weak/irrelevant on manual passage review. |
+| 30 RAG / 20 Agent sequential latency | Actually run after model warmup; total service medians 448.14/987.85 ms respectively. P95/P99 and stage distributions in final report. No concurrency capacity conclusion. |
+| Fresh 12-case real Agent security/citation | 10 expected 200, one 403 and one 404; 9/9 returned citations checked against in-scope DB rows. |
+| Live metrics and observed logs | Go and Python metrics series present; 144 backend/AI-service log lines scanned with no checked token/header/fixture-body patterns. |
+
+Failed attempts retained: the first Python command mounted only `ai-service/` and ended 3 failed/31 passed; a Go command with an empty derived `TEST_DATABASE_URL` skipped Worker integration and was rejected as a valid pass; one Agent script mount-depth error caused `IndexError`. Each was corrected and the full relevant run repeated. No skipped test is represented as passed.
