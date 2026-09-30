@@ -17,20 +17,20 @@ The Ollama [model library](https://ollama.com/library/bge-m3) lists BGE-M3 as mu
 Run these from the repository root in PowerShell. Docker Desktop must have a running Engine and NVIDIA GPU support. A first-time clone should start the default stack once so Go applies the versioned migrations:
 
 ```powershell
-docker compose -f deployments/compose.yaml up -d --build
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml up -d ollama
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml exec -T ollama ollama pull bge-m3:567m-fp16
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml exec -T ollama ollama pull qwen2.5:7b-instruct-q4_K_M
-docker compose -f deployments/compose.yaml stop backend ai-service
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml run --rm --no-deps ai-service python -m app.reindex --mode dry-run --confirm-maintenance
+docker compose --env-file .env -f deployments/compose.yaml up -d --build
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml up -d ollama
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml exec -T ollama ollama pull bge-m3:567m-fp16
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml exec -T ollama ollama pull qwen2.5:7b-instruct-q4_K_M
+docker compose --env-file .env -f deployments/compose.yaml stop backend ai-service
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml run --rm --no-deps ai-service python -m app.reindex --mode dry-run --confirm-maintenance
 ```
 
 Read the dry-run summary. If the database is empty, `--mode build` atomically changes its empty vector column and model profile; it has no old vectors to rebuild. If it has ready documents, the same command stages new vectors from saved originals and retains a rollback table. Back up PostgreSQL and uploads first for the nonempty path, following [REINDEX.md](REINDEX.md). Then:
 
 ```powershell
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml run --rm --no-deps ai-service python -m app.reindex --mode build --confirm-maintenance
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml up -d --build
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml ps
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml run --rm --no-deps ai-service python -m app.reindex --mode build --confirm-maintenance
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml up -d --build
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml ps
 ```
 
 After a **nonempty** staged reindex, validate known queries and the evaluation run before using `--mode finalize`; use `--mode rollback` if validation fails. An empty switch creates no backup and needs neither action. Running the default hash AI service against a 1024-dimensional BGE-M3 database will deliberately fail its health guard until an explicit reverse migration.
@@ -40,8 +40,8 @@ After a **nonempty** staged reindex, validate known queries and the evaluation r
 The AI container mounts only the public synthetic evaluation corpus at `/evaluation`. It writes the JSON result into `/tmp` inside the running container. For example:
 
 ```powershell
-docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml exec -T ai-service python -m app.evaluate --corpus /evaluation --output /tmp/local_real_recheck.json --top-k 8 --rerank-k 4 --context-chars 3200
-$containerId = docker compose -f deployments/compose.yaml -f deployments/compose.local-model.yaml ps -q ai-service
+docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml exec -T ai-service python -m app.evaluate --corpus /evaluation --output /tmp/local_real_recheck.json --top-k 8 --rerank-k 4 --context-chars 3200
+$containerId = docker compose --env-file .env -f deployments/compose.yaml -f deployments/compose.local-model.yaml ps -q ai-service
 docker cp "$($containerId):/tmp/local_real_recheck.json" docs/evaluation/results/local_real_recheck.json
 ```
 

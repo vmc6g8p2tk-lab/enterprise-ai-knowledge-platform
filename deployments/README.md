@@ -1,3 +1,3 @@
-Run from the repository root: `docker compose -f deployments/compose.yaml up --build`.
-Compose uses a local development password by default. For any shared environment, copy `.env.example` to `.env`, replace it, and keep `.env` untracked.
+Run from the repository root: `docker compose --env-file .env -f deployments/compose.yaml up --build`.
+Before starting, copy `.env.example` to the repository root as `.env`, set matching local PostgreSQL credentials, and generate separate random 32-byte-or-longer `JWT_SECRET` and `INTERNAL_SERVICE_TOKEN` values. Keep `.env` untracked. The default Compose database password is local-development only.
 The application Dockerfiles use Google's public mirror for official Docker base images because Docker Hub token requests timed out in the development environment. The pgvector image remains `pgvector/pgvector:pg17`.

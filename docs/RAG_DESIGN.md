@@ -1,4 +1,4 @@
-# RAG design — Phases 1–2.5
+# RAG design — Phases 1–3
 
 ## Chunking
 
@@ -27,3 +27,9 @@ Development debug responses record query, candidate chunk contents and cosine si
 ## Evaluation status and remaining work
 
 A versioned 20-positive/4-unsupported labeled set reports Hit@K, Recall@K, MRR, citation validity/scope/expected document and unsupported refusal separately for development and local real-model modes. The [evaluation report](RAG_EVALUATION.md) includes actual local GPU measurements; the [assistant's ten-case review](evaluation/MANUAL_REVIEW_LOCAL.md) explicitly separates answer support from extra citation relevance. One final-run answer still had an unnecessary adjacent citation. The small, synthetic set does not establish general semantic quality; independent human review, broader parser edge cases, prompt-injection testing, token-budget accuracy, cloud cost and concurrent capacity remain unverified. No production performance number is claimed.
+
+## Phase 3 changes and actual validation
+
+Ingestion now starts from a durable PostgreSQL Job and runs asynchronously; the parser, chunker, embedding interface, vector profile guard and existing RAG query path were retained. Only `ready` documents enter search, so an in-progress upload does not leak partial chunks. A repeated job transaction replaces all old chunks atomically. The RAG SQL still filters by `knowledge_base_id` before Top-K; Go verifies membership before forwarding a chat request.
+
+The Agent's `search_knowledge_base` tool uses the same embedding model, pgvector cosine Top-8 and lexical Top-4 settings, independently rechecks membership, and returns DB-owned chunk sources. The `get_document_metadata` tool returns an actual `documents` row. Both tool results are treated as untrusted context; the answer provider may select only source indices, never invent a citation ID. The real local-model 20+4 fixture was rerun unchanged in Phase 3: Hit@8/Recall@8/MRR 1.00 each, 20/20 DB-valid in-scope citations, 20/20 expected documents cited, four/four unsupported refusals. [Raw result](evaluation/results/phase3_rag_real.json). Agent cases and their limitations are in [AGENT_DESIGN.md](AGENT_DESIGN.md).

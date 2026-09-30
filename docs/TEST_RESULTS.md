@@ -68,3 +68,23 @@ This file records executed commands and observed outcomes on a Windows Docker De
 5. A later expanded test run failed collection due to a test-file indentation typo. The typo was fixed; the final full run had 7 passing tests.
 
 The native Windows `go test -race` attempt could not start because CGO was disabled by default; a second attempt with local GCC failed during cgo compilation. That failed attempt is **not** counted as passed. The same Go race command then passed inside a temporary Linux container with CGO, GCC and musl. Its scope remains the existing Go unit tests; it is not a concurrent load test.
+
+## Phase 3 final regression — local real-model Compose, 2026-09-30
+
+The full details, actual failed-then-fixed cases and timing bounds are in [PHASE3_VALIDATION.md](PHASE3_VALIDATION.md). This section supersedes historical Phase 1/2 test counts above for the **current** code.
+
+| Check | Actual result |
+| --- | --- |
+| Python `python -m pytest -q tests` | **31 passed in 23.49s**, no skips. Dedicated hash vector(1536) test DB plus live local-model vector(1024) Compose endpoints. |
+| Go `go test -count=1 ./...` | PASS with real PostgreSQL Worker integration tests. |
+| `go vet ./...` | PASS, exit 0. |
+| `CGO_ENABLED=1 go test -race -count=1 ./...` | PASS in Go 1.24 Linux container with real PostgreSQL Worker tests; no observed race in exercised paths. |
+| Frontend `npm run build` | PASS, TypeScript and Vite build exit 0. |
+| Compose health | PostgreSQL/pgvector, backend, AI service, frontend and Ollama all healthy after final rebuild. |
+| Full Compose RBAC/async/Agent | Live editor upload HTTP 202, viewer RAG and Agent citations verified against DB; unauthorized paths denied. A blank TXT exhausted 3 real processing attempts. |
+| Actual backend restart | Expired leased Job reprocessed after Compose backend restart; `attempt_count=2`, document `ready`, 3 unique chunks, no duplicate. |
+| Real local RAG 20+4 | Hit@8/Recall@8/MRR 1.00 each; 20/20 citations exist and are in scope; 20/20 expected documents cited; 4/4 unsupported refusals. [Raw JSON](evaluation/results/phase3_rag_real.json). |
+| Real local Agent 12 cases | Ten HTTP 200, expected cross-KB 403 and outsider 404; 8/8 returned citations matched DB, including exact metadata field checks in the [latest raw JSON](evaluation/results/phase3_agent_local_real_verified.json). Two initial metadata abstentions were retained in [before raw JSON](evaluation/results/phase3_agent_local_real_before.json) and fixed in [first after raw JSON](evaluation/results/phase3_agent_local_real_after.json). Greeting still abstains. |
+| Metrics | Both Go and Python `/metrics` returned scrape text with observed live counters/durations; Go queue pending was 0 after drain. |
+
+**Not validated:** production traffic, multi-host HA, cloud model, native function calling, independent security review or stable concurrent inference capacity. The Phase 3 RAG latency run was slower than Phase 2.5; stage data points to model generation and an observed busy GPU, not Go auth/queue code. See the measured values and uncertainty in [RAG_EVALUATION.md](RAG_EVALUATION.md).

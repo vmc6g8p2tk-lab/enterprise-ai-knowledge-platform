@@ -38,3 +38,45 @@ The first end-to-end upload failed although the Go process had saved the file: i
 | Structural citation vs support | Final evaluation had 21/21 citations matching in-scope DB rows. In a ten-case answer review, P06 still included an adjacent chunk that did not contain the 90-day fact. | A valid row ID proves provenance, not that each cited passage entails the answer. Describe the observed extra citation and the need for stronger support evaluation. |
 | Prompt adjustment | Initial local runs showed extra adjacent citations in P01, P06 and P15. A narrower citation instruction was tried with the same corpus and retrieval settings; one over-citation remained in the final fixed-seed run. | Treat before/after as observations, not proof of causality: the earlier runs had no fixed seed and model output can vary. Do not edit evaluation cases to improve scores. |
 | Small evaluation set | Hit@8, Recall@8 and MRR were all 1.00 on 20 direct fact questions, just as in development mode. Four unsupported questions abstained. | This demonstrates this particular corpus path, not general model superiority. Propose diverse paraphrases, conflicting policies, longer documents and independent human annotation before a broader claim. |
+
+## Phase 3 interview learning notes
+
+### PostgreSQL Job queue and Go concurrency
+
+1. **Problem:** A synchronous upload holds an HTTP request during parsing, embedding and database writes; a process crash can leave work unfinished.
+2. **Core idea:** Commit a Job with the document, then let two goroutines claim due rows through `FOR UPDATE SKIP LOCKED`. A short lease plus heartbeat distinguishes a live slow worker from a dead one.
+3. **Why this choice:** Document and Job creation share one PostgreSQL transaction. At this scale, operating another broker adds failure modes without demonstrated need.
+4. **Alternatives:** Kafka/RabbitMQ, an external managed queue, or synchronous processing. A broker may be justified at much larger volume or for cross-service event streaming.
+5. **Drawbacks:** Polling adds up to about 500 ms wait, a shared DB can become the bottleneck, and retries can repeat an embedding call. File save and DB commit are not atomic together.
+6. **Likely interview question:** “Does `SKIP LOCKED` guarantee exactly once?”
+7. **Answer:** No. It prevents concurrent claims while rows are locked, but a crash after work and before completion can replay it. A unique Job per document, advisory lock and transactional chunk replacement make the stored result idempotent. The real restart test ended with 3 unique chunks after attempt 2.
+
+### JWT and knowledge-base RBAC
+
+1. **Problem:** An untrusted browser must not use a KB ID in a URL to read or alter another user's documents.
+2. **Core idea:** The Go API verifies the signed token, resolves user identity and checks a KB membership row for every route. The Agent tool checks the same boundary again before DB access.
+3. **Why this choice:** KB-local `admin/editor/viewer` roles fit a small internal prototype; bcrypt protects stored passwords, and fixed-algorithm short-lived JWTs avoid a server-side session table for now.
+4. **Alternatives:** Cookie sessions, OIDC/enterprise SSO, policy engines or row-level security. They bring different revocation and operational tradeoffs.
+5. **Drawbacks:** Open registration, no MFA/rate limit/refresh or explicit token revocation; the first creator becomes the admin of a new KB. Existing unowned KBs need a one-time membership assignment.
+6. **Likely interview question:** “Why is hiding the Upload button insufficient?”
+7. **Answer:** A client can call the API directly. The server denies viewer upload with 403, editor delete with 403, and unassigned KB access with 404. Query SQL also filters by KB before Top-K, and citations come only from authorized results.
+
+### Agent tool calling and prompt injection
+
+1. **Problem:** The model needs a controlled way to request knowledge search or document status without gaining arbitrary system access.
+2. **Core idea:** A replaceable planner returns JSON for a two-tool allowlist; code validates exact arguments and permissions, executes one read-only tool, then the answer provider uses its result as lower-trust context. Citation indices resolve to real DB rows.
+3. **Why this choice:** The local Qwen OpenAI-compatible endpoint reliably supports structured JSON planning in this test; it was not claimed as native function calling. Restricting tools keeps the security boundary inspectable.
+4. **Alternatives:** Native function calling on a verified model, deterministic routing for specific intents, or multi-step planners. Each would need its own measured reliability and tests.
+5. **Drawbacks:** One tool per request, poor plan risk, no greeting response without a source, and no proof that every cited passage supports every answer claim. Initial metadata questions abstained until the tool included the requested document UUID.
+6. **Likely interview question:** “How do you prevent an uploaded document from making the Agent run `curl` or SQL?”
+7. **Answer:** Document text is data in the lower-priority context; the planner can only name two allowlisted tools. Exact argument validation and a database membership check happen at tool execution. Eight injected plans and real cross-KB cases were tested. This is defense for those paths, not a claim of complete prompt-injection resistance.
+
+### Metrics and performance interpretation
+
+1. **Problem:** A correct response hides latency, retries and queue buildup.
+2. **Core idea:** Expose HTTP, RAG, retrieval, embedding, LLM, Job and tool counters/durations in Prometheus text. Keep request text and secrets out of ordinary logs.
+3. **Why this choice:** A small scrape endpoint makes the critical stages observable without adding a Grafana deployment in this phase.
+4. **Alternatives:** OpenTelemetry traces and histograms, persistent Prometheus/Grafana, database query tracing.
+5. **Drawbacks:** Counters reset on restart and there is no historical store or alerting. A 24-case local latency comparison can be confounded by GPU activity.
+6. **Likely interview question:** “Did Phase 3 make RAG three times slower?”
+7. **Answer:** The Phase 3 evaluation bypassed the new Go code. Median generation time rose from roughly 351 to 922 ms while retrieval stayed near 10–12 ms and token counts barely changed. GPU use was high outside requests, but attribution was unavailable. I would repeat under controlled idle-GPU conditions before claiming a causal regression.

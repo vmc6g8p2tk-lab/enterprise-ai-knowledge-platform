@@ -16,13 +16,13 @@ The database stores one active vector space at a time. The singleton embedding p
 
 Commands from the repository root, using the appropriate .env values:
 
-    docker compose -f deployments/compose.yaml stop frontend backend ai-service
-    docker compose -f deployments/compose.yaml run --rm --no-deps ai-service python -m app.reindex --mode dry-run --confirm-maintenance
-    docker compose -f deployments/compose.yaml run --rm --no-deps ai-service python -m app.reindex --mode build --confirm-maintenance
+    docker compose --env-file .env -f deployments/compose.yaml stop frontend backend ai-service
+    docker compose --env-file .env -f deployments/compose.yaml run --rm --no-deps ai-service python -m app.reindex --mode dry-run --confirm-maintenance
+    docker compose --env-file .env -f deployments/compose.yaml run --rm --no-deps ai-service python -m app.reindex --mode build --confirm-maintenance
 
 For rollback or finalization, substitute --mode rollback or --mode finalize in the last command. Then start with:
 
-    docker compose -f deployments/compose.yaml up -d
+    docker compose --env-file .env -f deployments/compose.yaml up -d
 
 The code refuses a new build if an earlier stage or backup still exists; inspect it before taking any manual database action. An interrupted build leaves the old active table intact. An interrupted cutover transaction rolls back. The database operations were tested with a 1536-to-64-dimensional hash-provider rebuild, rollback and finalize in an isolated real pgvector database. A real paid-model rebuild has **not** been run without an API key. Model changes may incur substantial API cost; use a small isolated corpus first.
 
