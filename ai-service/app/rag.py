@@ -12,6 +12,7 @@ import psycopg
 from psycopg.rows import dict_row, tuple_row
 
 from .chunking import chunk_text
+from .metrics import METRICS
 from .parsing import extract_text
 from .providers import AnswerProvider, EmbeddingProvider, GenerationResult, INSUFFICIENT
 from .reranking import LexicalReranker, Reranker
@@ -85,6 +86,10 @@ def ensure_embedding_profile(conn: psycopg.Connection, embedder: EmbeddingProvid
 
 def process_document(document_id: str, embedder: EmbeddingProvider) -> int:
     with psycopg.connect(database_url(), row_factory=dict_row) as conn:
+        # Session advisory lock serializes even a reclaimed job with an old worker.
+        # Connection close releases it after a crash; chunk replacement is transactional.
+        conn.execute("SELECT pg_advisory_lock(hashtextextended(%s, 0))", (document_id,))
+        conn.commit()
         row = conn.execute("SELECT id,storage_path FROM documents WHERE id=%s", (document_id,)).fetchone()
         if row is None:
             raise LookupError("document not found")
@@ -102,9 +107,11 @@ def process_document(document_id: str, embedder: EmbeddingProvider) -> int:
             if not chunks:
                 raise ValueError("document has no chunks")
             # The provider batches internally. Never hold a DB transaction across remote calls.
+            started_embedding = time.perf_counter()
             embeddings = embedder.embed_batch(chunks)
             if len(embeddings) != len(chunks):
                 raise ValueError("embedding provider returned the wrong count")
+            METRICS.observe("embedding_duration_seconds", (time.perf_counter() - started_embedding) * 1000)
             literals = [vector_literal(vector, embedder.dimensions) for vector in embeddings]
             with conn.transaction():
                 conn.execute("DELETE FROM document_chunks WHERE document_id=%s", (document_id,))
@@ -185,6 +192,10 @@ def chat(knowledge_base_id: str, question: str, embedder: EmbeddingProvider,
         for index in indices
     ]
     total_ms = (time.perf_counter() - started) * 1000
+    METRICS.observe("rag_request_duration_seconds", total_ms)
+    METRICS.observe("embedding_duration_seconds", embedding_ms)
+    METRICS.observe("retrieval_duration_seconds", db_ms)
+    METRICS.observe("llm_duration_seconds", generation_ms)
     reranked = [{**_trace_row(row), "rerank_score": row["rerank_score"]} for row in ranked]
     result = {
         "answer": generation.answer,

@@ -26,6 +26,8 @@ services:
       UPLOAD_DIR: /data/uploads
       HTTP_ADDR: :8080
       CORS_ORIGIN: http://localhost:5173
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in the project .env}
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN:?Set INTERNAL_SERVICE_TOKEN in the project .env}
     ports:
       - "127.0.0.1:18080:8080"
     volumes:
@@ -58,6 +60,7 @@ services:
       MODEL_TIMEOUT_SECONDS: ${MODEL_TIMEOUT_SECONDS:-30}
       MODEL_MAX_RETRIES: ${MODEL_MAX_RETRIES:-2}
       RAG_DEBUG: ${RAG_DEBUG:-1}
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN:?Set INTERNAL_SERVICE_TOKEN in the project .env}
     volumes:
       - uploads:/data/uploads:ro
     depends_on:

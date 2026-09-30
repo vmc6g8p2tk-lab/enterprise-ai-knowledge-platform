@@ -24,9 +24,10 @@ const maxUploadBytes = 10 << 20
 var uuidPattern = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
 
 type API struct {
-	db  *pgxpool.Pool
-	cfg config.Config
-	ai  *http.Client
+	db          *pgxpool.Pool
+	cfg         config.Config
+	ai          *http.Client
+	metricsData *httpMetrics
 }
 type KnowledgeBase struct {
 	ID          string    `json:"id"`
@@ -47,22 +48,47 @@ type Document struct {
 }
 
 func New(db *pgxpool.Pool, cfg config.Config) http.Handler {
-	a := &API{db: db, cfg: cfg, ai: &http.Client{Timeout: 120 * time.Second}}
+	a := &API{db: db, cfg: cfg, ai: &http.Client{Timeout: 5 * time.Minute}, metricsData: newHTTPMetrics()}
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", a.health)
+	mux.HandleFunc("GET /metrics", a.metrics)
+	mux.HandleFunc("POST /auth/register", a.register)
+	mux.HandleFunc("POST /auth/login", a.login)
 	mux.HandleFunc("GET /knowledge-bases", a.listKnowledgeBases)
 	mux.HandleFunc("POST /knowledge-bases", a.createKnowledgeBase)
 	mux.HandleFunc("GET /knowledge-bases/{id}", a.getKnowledgeBase)
+	mux.HandleFunc("DELETE /knowledge-bases/{id}", a.deleteKnowledgeBase)
+	mux.HandleFunc("GET /knowledge-bases/{id}/members", a.listMembers)
+	mux.HandleFunc("PUT /knowledge-bases/{id}/members/{userID}", a.putMember)
 	mux.HandleFunc("GET /knowledge-bases/{id}/documents", a.listDocuments)
 	mux.HandleFunc("POST /knowledge-bases/{id}/documents", a.uploadDocument)
+	mux.HandleFunc("DELETE /knowledge-bases/{id}/documents/{documentID}", a.deleteDocument)
 	mux.HandleFunc("POST /knowledge-bases/{id}/chat", a.chat)
+	mux.HandleFunc("POST /knowledge-bases/{id}/agent", a.agent)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		started := time.Now()
+		method, path := r.Method, r.URL.Path
+		recorded := &responseRecorder{ResponseWriter: w}
+		defer func() {
+			status := recorded.status
+			if status == 0 {
+				status = 200
+			}
+			a.metricsData.observe(method, path, status, time.Since(started))
+		}()
+		w = recorded
 		w.Header().Set("Access-Control-Allow-Origin", cfg.CORSOrigin)
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)
 			return
+		}
+		if r.URL.Path != "/healthz" && r.URL.Path != "/metrics" && r.URL.Path != "/auth/register" && r.URL.Path != "/auth/login" {
+			r = a.authenticate(w, r)
+			if r == nil {
+				return
+			}
 		}
 		mux.ServeHTTP(w, r)
 	})
@@ -97,8 +123,20 @@ func (a *API) createKnowledgeBase(w http.ResponseWriter, r *http.Request) {
 		writeError(w, 500, "unable to create id")
 		return
 	}
+	tx, err := a.db.Begin(r.Context())
+	if err != nil {
+		writeError(w, 500, "database error")
+		return
+	}
+	defer tx.Rollback(r.Context())
 	var kb KnowledgeBase
-	err = a.db.QueryRow(r.Context(), "INSERT INTO knowledge_bases(id,name,description) VALUES($1,$2,$3) RETURNING id,name,description,created_at", id, input.Name, input.Description).Scan(&kb.ID, &kb.Name, &kb.Description, &kb.CreatedAt)
+	err = tx.QueryRow(r.Context(), "INSERT INTO knowledge_bases(id,name,description) VALUES($1,$2,$3) RETURNING id,name,description,created_at", id, input.Name, input.Description).Scan(&kb.ID, &kb.Name, &kb.Description, &kb.CreatedAt)
+	if err == nil {
+		_, err = tx.Exec(r.Context(), "INSERT INTO knowledge_base_members(knowledge_base_id,user_id,role) VALUES($1,$2,'admin')", id, userID(r))
+	}
+	if err == nil {
+		err = tx.Commit(r.Context())
+	}
 	if err != nil {
 		writeError(w, 500, "database error")
 		return
@@ -107,7 +145,8 @@ func (a *API) createKnowledgeBase(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *API) listKnowledgeBases(w http.ResponseWriter, r *http.Request) {
-	rows, err := a.db.Query(r.Context(), "SELECT id,name,description,created_at FROM knowledge_bases ORDER BY created_at DESC LIMIT 100")
+	rows, err := a.db.Query(r.Context(), `SELECT k.id,k.name,k.description,k.created_at FROM knowledge_bases k
+		JOIN knowledge_base_members m ON m.knowledge_base_id=k.id WHERE m.user_id=$1 ORDER BY k.created_at DESC LIMIT 100`, userID(r))
 	if err != nil {
 		writeError(w, 500, "database error")
 		return
@@ -131,8 +170,7 @@ func (a *API) listKnowledgeBases(w http.ResponseWriter, r *http.Request) {
 
 func (a *API) getKnowledgeBase(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	if !validUUID(id) {
-		writeError(w, 400, "invalid knowledge base id")
+	if !a.authorizeKB(w, r, id, "viewer") {
 		return
 	}
 	var kb KnowledgeBase
@@ -150,12 +188,7 @@ func (a *API) getKnowledgeBase(w http.ResponseWriter, r *http.Request) {
 
 func (a *API) listDocuments(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	if !validUUID(id) {
-		writeError(w, 400, "invalid knowledge base id")
-		return
-	}
-	if !a.knowledgeBaseExists(r.Context(), id) {
-		writeError(w, 404, "knowledge base not found")
+	if !a.authorizeKB(w, r, id, "viewer") {
 		return
 	}
 	rows, err := a.db.Query(r.Context(), "SELECT id,knowledge_base_id,original_filename,media_type,status,chunk_count,failure_reason,created_at,updated_at FROM documents WHERE knowledge_base_id=$1 ORDER BY created_at DESC LIMIT 100", id)
@@ -193,12 +226,7 @@ func (a *API) getDocument(ctx context.Context, id string) (Document, error) {
 
 func (a *API) uploadDocument(w http.ResponseWriter, r *http.Request) {
 	kbID := r.PathValue("id")
-	if !validUUID(kbID) {
-		writeError(w, 400, "invalid knowledge base id")
-		return
-	}
-	if !a.knowledgeBaseExists(r.Context(), kbID) {
-		writeError(w, 404, "knowledge base not found")
+	if !a.authorizeKB(w, r, kbID, "editor") {
 		return
 	}
 	r.Body = http.MaxBytesReader(w, r.Body, maxUploadBytes+1024*1024)
@@ -241,43 +269,42 @@ func (a *API) uploadDocument(w http.ResponseWriter, r *http.Request) {
 		writeError(w, 400, "invalid or oversized file")
 		return
 	}
-	_, err = a.db.Exec(r.Context(), "INSERT INTO documents(id,knowledge_base_id,original_filename,media_type,storage_path) VALUES($1,$2,$3,$4,$5)", id, kbID, name, media, storagePath)
+	jobID, err := newUUID()
+	if err != nil {
+		_ = os.Remove(storagePath)
+		writeError(w, 500, "unable to create job id")
+		return
+	}
+	tx, err := a.db.Begin(r.Context())
 	if err != nil {
 		_ = os.Remove(storagePath)
 		writeError(w, 500, "database error")
 		return
 	}
-	request, err := http.NewRequestWithContext(r.Context(), http.MethodPost, strings.TrimRight(a.cfg.AIServiceURL, "/")+"/internal/documents/"+id+"/process", nil)
+	defer tx.Rollback(r.Context())
+	_, err = tx.Exec(r.Context(), "INSERT INTO documents(id,knowledge_base_id,original_filename,media_type,storage_path) VALUES($1,$2,$3,$4,$5)", id, kbID, name, media, storagePath)
 	if err == nil {
-		var response *http.Response
-		response, err = a.ai.Do(request)
-		if err == nil {
-			_, _ = io.Copy(io.Discard, io.LimitReader(response.Body, 1024))
-			_ = response.Body.Close()
-			if response.StatusCode != 200 {
-				err = fmt.Errorf("AI service returned %d", response.StatusCode)
-			}
-		}
+		_, err = tx.Exec(r.Context(), "INSERT INTO processing_jobs(id,document_id) VALUES($1,$2)", jobID, id)
+	}
+	if err == nil {
+		err = tx.Commit(r.Context())
 	}
 	if err != nil {
-		_, _ = a.db.Exec(context.Background(), "UPDATE documents SET status='failed',failure_reason=$2,updated_at=now() WHERE id=$1 AND status IN ('pending','processing')", id, "processing service unavailable or failed")
+		_ = os.Remove(storagePath)
+		writeError(w, 500, "database error")
+		return
 	}
 	d, err := a.getDocument(r.Context(), id)
 	if err != nil {
 		writeError(w, 500, "database error")
 		return
 	}
-	writeJSON(w, 201, d)
+	writeJSON(w, http.StatusAccepted, d)
 }
 
 func (a *API) chat(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	if !validUUID(id) {
-		writeError(w, 400, "invalid knowledge base id")
-		return
-	}
-	if !a.knowledgeBaseExists(r.Context(), id) {
-		writeError(w, 404, "knowledge base not found")
+	if !a.authorizeKB(w, r, id, "viewer") {
 		return
 	}
 	var input struct {
@@ -299,6 +326,7 @@ func (a *API) chat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("X-Internal-Token", a.cfg.InternalToken)
 	response, err := a.ai.Do(request)
 	if err != nil {
 		writeError(w, 502, "AI service unavailable")
@@ -312,6 +340,61 @@ func (a *API) chat(w http.ResponseWriter, r *http.Request) {
 	}
 	if response.StatusCode != 200 {
 		writeError(w, 502, "AI service error")
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(200)
+	_, _ = w.Write(data)
+}
+
+func (a *API) agent(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	if !a.authorizeKB(w, r, id, "viewer") {
+		return
+	}
+	var input struct {
+		Question string `json:"question"`
+	}
+	if err := decodeJSON(w, r, &input); err != nil {
+		writeError(w, 400, err.Error())
+		return
+	}
+	input.Question = strings.TrimSpace(input.Question)
+	if input.Question == "" || len(input.Question) > 2000 {
+		writeError(w, 400, "question must have 1-2000 characters")
+		return
+	}
+	requestID, err := newUUID()
+	if err != nil {
+		writeError(w, 500, "unable to create request id")
+		return
+	}
+	body, _ := json.Marshal(map[string]string{"question": input.Question, "user_id": userID(r), "request_id": requestID})
+	request, err := http.NewRequestWithContext(r.Context(), http.MethodPost,
+		strings.TrimRight(a.cfg.AIServiceURL, "/")+"/internal/knowledge-bases/"+id+"/agent", strings.NewReader(string(body)))
+	if err != nil {
+		writeError(w, 500, "unable to prepare request")
+		return
+	}
+	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("X-Internal-Token", a.cfg.InternalToken)
+	response, err := a.ai.Do(request)
+	if err != nil {
+		writeError(w, 502, "AI service unavailable")
+		return
+	}
+	defer response.Body.Close()
+	data, err := io.ReadAll(io.LimitReader(response.Body, 2<<20))
+	if err != nil {
+		writeError(w, 502, "AI service response error")
+		return
+	}
+	if response.StatusCode == 403 {
+		writeError(w, 403, "agent tool access denied")
+		return
+	}
+	if response.StatusCode != 200 {
+		writeError(w, 502, "agent request failed")
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")

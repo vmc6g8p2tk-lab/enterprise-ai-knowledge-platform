@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"errors"
 	"flag"
 	"log"
@@ -13,6 +15,7 @@ import (
 
 	"github.com/VMC6G8P2TK-Lab/enterprise-ai-knowledge-platform/backend/internal/config"
 	"github.com/VMC6G8P2TK-Lab/enterprise-ai-knowledge-platform/backend/internal/httpapi"
+	"github.com/VMC6G8P2TK-Lab/enterprise-ai-knowledge-platform/backend/internal/jobs"
 	"github.com/VMC6G8P2TK-Lab/enterprise-ai-knowledge-platform/backend/internal/migrate"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -39,7 +42,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer pool.Close()
+	defer func() { cancel(); pool.Close() }()
 	if err := pool.Ping(ctx); err != nil {
 		log.Fatal(err)
 	}
@@ -48,6 +51,15 @@ func main() {
 	}
 	if err := os.MkdirAll(cfg.UploadDir, 0700); err != nil {
 		log.Fatal(err)
+	}
+	for range cfg.WorkerConcurrency {
+		var idBytes [16]byte
+		if _, err := rand.Read(idBytes[:]); err != nil {
+			log.Fatal(err)
+		}
+		worker := &jobs.Worker{DB: pool, AIURL: cfg.AIServiceURL, Token: cfg.InternalToken,
+			ID: hex.EncodeToString(idBytes[:]), HTTPClient: &http.Client{Timeout: 15 * time.Minute}}
+		go worker.Run(ctx)
 	}
 	server := &http.Server{Addr: cfg.HTTPAddr, Handler: httpapi.New(pool, cfg), ReadHeaderTimeout: 5 * time.Second}
 	go func() {
