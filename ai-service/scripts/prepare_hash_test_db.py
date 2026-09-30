@@ -26,7 +26,7 @@ def main() -> None:
         exists = conn.execute("SELECT to_regclass('public.knowledge_bases')").fetchone()[0]
         if exists is None:
             for name in ("0001_initial.sql", "0002_embedding_profile.sql",
-                         "0003_reindex_backup.sql"):
+                         "0003_reindex_backup.sql", "0004_processing_jobs.sql", "0005_auth_rbac.sql"):
                 conn.execute((migrations / name).read_text(encoding="utf-8"))
         else:
             vector_type = conn.execute(
@@ -35,6 +35,10 @@ def main() -> None:
                 "WHERE t.relname='document_chunks' AND a.attname='embedding'").fetchone()
             if vector_type is None or vector_type[0] != "vector(1536)":
                 raise ValueError("existing test database is not a vector(1536) test schema")
+            for table, name in (("processing_jobs", "0004_processing_jobs.sql"),
+                                ("users", "0005_auth_rbac.sql")):
+                if conn.execute("SELECT to_regclass(%s)", (f"public.{table}",)).fetchone()[0] is None:
+                    conn.execute((migrations / name).read_text(encoding="utf-8"))
     print("knowledge_test is ready with vector(1536)")
 
 

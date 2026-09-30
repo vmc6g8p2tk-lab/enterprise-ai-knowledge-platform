@@ -1,5 +1,7 @@
 """Full Compose API test. Uses the live stack's database; no mocks or skips."""
 import os
+import time
+import uuid
 
 import httpx
 import psycopg
@@ -7,10 +9,35 @@ from docx import Document
 from reportlab.pdfgen.canvas import Canvas
 
 
+def _session(client: httpx.Client, api: str) -> None:
+    email = f"e2e-{uuid.uuid4()}@example.test"
+    password = "E2E-password-2026!"
+    created = client.post(f"{api}/auth/register", json={"email": email, "password": password})
+    assert created.status_code == 201, created.text
+    logged = client.post(f"{api}/auth/login", json={"email": email, "password": password})
+    assert logged.status_code == 200, logged.text
+    client.headers["Authorization"] = f"Bearer {logged.json()['access_token']}"
+
+
+def _wait_document(client: httpx.Client, api: str, kb_id: str, document_id: str,
+                   terminal: str = "ready", timeout: float = 120) -> dict:
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        response = client.get(f"{api}/knowledge-bases/{kb_id}/documents")
+        assert response.status_code == 200, response.text
+        document = next(row for row in response.json() if row["id"] == document_id)
+        if document["status"] in {"ready", "failed"}:
+            assert document["status"] == terminal, document
+            return document
+        time.sleep(0.5)
+    raise AssertionError(f"document {document_id} did not reach {terminal}")
+
+
 def test_public_api_upload_chat_and_database_citation():
     api = os.environ["E2E_API_URL"].rstrip("/")
     database = os.environ.get("E2E_DATABASE_URL", os.environ["TEST_DATABASE_URL"])
     with httpx.Client(timeout=120) as client:
+        _session(client, api)
         health = client.get(f"{api}/healthz")
         assert health.status_code == 200
         first = client.post(f"{api}/knowledge-bases", json={"name": "E2E handbook A"})
@@ -21,9 +48,8 @@ def test_public_api_upload_chat_and_database_citation():
             text = ("Annual leave policy: staff receive twenty days of paid vacation each year. " * 12 +
                     "\n\nSecurity policy: all staff must use two factor authentication. " * 12)
             uploaded = client.post(f"{api}/knowledge-bases/{first_id}/documents", files={"file": ("handbook.txt", text.encode(), "text/plain")})
-            assert uploaded.status_code == 201, uploaded.text
-            document = uploaded.json()
-            assert document["status"] == "ready", document
+            assert uploaded.status_code == 202, uploaded.text
+            document = _wait_document(client, api, first_id, uploaded.json()["id"])
             assert document["chunk_count"] > 1
             listed = client.get(f"{api}/knowledge-bases/{first_id}/documents")
             assert listed.status_code == 200 and any(row["id"] == document["id"] for row in listed.json())
@@ -56,8 +82,8 @@ def test_public_api_upload_chat_and_database_citation():
             assert isolated.json()["retrieval"]["initial_top_k"] == []
             assert isolated.json()["abstained"] is True
         finally:
-            with psycopg.connect(database) as conn:
-                conn.execute("DELETE FROM knowledge_bases WHERE id IN (%s,%s)", (first_id, second_id))
+            assert client.delete(f"{api}/knowledge-bases/{first_id}").status_code == 204
+            assert client.delete(f"{api}/knowledge-bases/{second_id}").status_code == 204
 
 
 def test_pdf_docx_markdown_upload_and_failed_status(tmp_path):
@@ -72,6 +98,7 @@ def test_pdf_docx_markdown_upload_and_failed_status(tmp_path):
     blank = tmp_path / "blank.txt"
     blank.write_text("   \n  ", encoding="utf-8")
     with httpx.Client(timeout=120) as client:
+        _session(client, api)
         created = client.post(f"{api}/knowledge-bases", json={"name": "E2E format checks"})
         assert created.status_code == 201
         kb_id = created.json()["id"]
@@ -79,14 +106,23 @@ def test_pdf_docx_markdown_upload_and_failed_status(tmp_path):
             for path in (pdf, docx, markdown):
                 with path.open("rb") as source:
                     result = client.post(f"{api}/knowledge-bases/{kb_id}/documents", files={"file": (path.name, source)})
-                assert result.status_code == 201, result.text
-                assert result.json()["status"] == "ready", result.json()
-                assert result.json()["chunk_count"] >= 1
+                assert result.status_code == 202, result.text
+                completed = _wait_document(client, api, kb_id, result.json()["id"])
+                assert completed["chunk_count"] >= 1
             with blank.open("rb") as source:
                 failed = client.post(f"{api}/knowledge-bases/{kb_id}/documents", files={"file": (blank.name, source)})
-            assert failed.status_code == 201
-            assert failed.json()["status"] == "failed"
-            assert "no extractable text" in failed.json()["failure_reason"]
+            assert failed.status_code == 202
+            terminal = _wait_document(client, api, kb_id, failed.json()["id"], "failed")
+            assert "no extractable text" in terminal["failure_reason"]
+            # The document may briefly be failed during a retry; assert the durable job terminal state.
+            deadline = time.monotonic() + 40
+            while time.monotonic() < deadline:
+                with psycopg.connect(database) as conn:
+                    job = conn.execute("SELECT status,attempt_count,last_error,started_at,finished_at "
+                                       "FROM processing_jobs WHERE document_id=%s", (failed.json()["id"],)).fetchone()
+                if job[0] == "failed":
+                    break
+                time.sleep(0.5)
+            assert job[0] == "failed" and job[1] == 3 and job[2] and job[3] and job[4]
         finally:
-            with psycopg.connect(database) as conn:
-                conn.execute("DELETE FROM knowledge_bases WHERE id=%s", (kb_id,))
+            assert client.delete(f"{api}/knowledge-bases/{kb_id}").status_code == 204

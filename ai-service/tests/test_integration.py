@@ -24,6 +24,8 @@ def test_pgvector_ingestion_scope_and_citation(tmp_path: Path, monkeypatch):
     try:
         count = process_document(document_id, HashEmbedding())
         assert count > 1
+        # A replayed/reclaimed job replaces chunks atomically instead of appending duplicates.
+        assert process_document(document_id, HashEmbedding()) == count
         with psycopg.connect(database) as conn:
             status, stored_count = conn.execute("SELECT status,chunk_count FROM documents WHERE id=%s", (document_id,)).fetchone()
             assert (status, stored_count) == ("ready", count)
