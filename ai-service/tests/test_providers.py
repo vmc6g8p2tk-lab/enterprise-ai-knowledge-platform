@@ -121,3 +121,23 @@ def test_llm_optional_sampling_config_is_forwarded():
     assert provider.generate("question", [{"content": "context"}]).citation_indices == [0]
     assert requests[0]["temperature"] == 0.0
     assert requests[0]["seed"] == 42
+
+
+def test_quantity_answer_prompt_keeps_source_units_and_conditions():
+    requests = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(json.loads(request.content))
+        return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps({
+            "answer": "Within 30 minutes of discovery", "citation_numbers": [0],
+            "insufficient": False})}}]})
+
+    transport = RetryingJSONClient("test-only-key", "https://example.invalid/v1",
+                                   client=httpx.Client(transport=httpx.MockTransport(respond)))
+    provider = OpenAIAnswer("test-only-key", "https://example.invalid/v1", "test-chat",
+                            transport=transport)
+    result = provider.generate("Within how long must it be reported?", [{
+        "content": "A suspected incident must be reported within 30 minutes of discovery."}])
+    assert result.answer == "Within 30 minutes of discovery"
+    assert result.citation_indices == [0]
+    assert "保留资料中的单位和适用条件" in requests[0]["messages"][0]["content"]

@@ -1,0 +1,1755 @@
+{
+  "started_utc": "2026-09-30T03:47:38.273638+00:00",
+  "corpus_sha256": "390d3d91d9c1cc0b2cb6b3cbfbe9937410dfe166acbdd56ed5314c500fc7789e",
+  "embedding_model": "bge-m3:567m-fp16",
+  "llm_model": "qwen2.5:7b-instruct-q4_K_M",
+  "config": {
+    "top_k": 8,
+    "rerank_k": 4,
+    "context_chars": 3200,
+    "requests_sequential": true,
+    "warmup_excluded": true
+  },
+  "rag_cases": [
+    {
+      "id": "P01",
+      "question": "How many annual leave days do full-time employees receive?",
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 9.66,
+        "retrieval_db": 12.11,
+        "rerank": 0.28,
+        "generation": 413.21,
+        "total": 435.29,
+        "wall": 438.53
+      },
+      "usage": {
+        "prompt_tokens": 513,
+        "completion_tokens": 39,
+        "total_tokens": 552
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "question": "How long is the probation period for new employees?",
+      "answer": "The probation period for new employees is three months.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 24.49,
+        "retrieval_db": 10.73,
+        "rerank": 0.18,
+        "generation": 400.33,
+        "total": 435.77,
+        "wall": 437.98
+      },
+      "usage": {
+        "prompt_tokens": 512,
+        "completion_tokens": 36,
+        "total_tokens": 548
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 1
+        },
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": false,
+          "document_name": "people-handbook.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "question": "How many remote work days per week are allowed after manager approval?",
+      "answer": "After manager approval, employees may work remotely up to two days per week.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 27.02,
+        "retrieval_db": 6.14,
+        "rerank": 0.12,
+        "generation": 424.0,
+        "total": 457.31,
+        "wall": 459.73
+      },
+      "usage": {
+        "prompt_tokens": 517,
+        "completion_tokens": 38,
+        "total_tokens": 555
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "question": "What is the yearly learning budget for a full-time employee?",
+      "answer": "Each full-time employee has a yearly learning budget of 1200 currency units.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 8.06,
+        "retrieval_db": 7.56,
+        "rerank": 0.12,
+        "generation": 447.92,
+        "total": 463.69,
+        "wall": 466.57
+      },
+      "usage": {
+        "prompt_tokens": 516,
+        "completion_tokens": 41,
+        "total_tokens": 557
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 3
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "question": "Which account requires multi-factor authentication?",
+      "answer": "The corporate identity account requires multi-factor authentication.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 32.28,
+        "retrieval_db": 9.93,
+        "rerank": 0.15,
+        "generation": 386.76,
+        "total": 429.14,
+        "wall": 432.44
+      },
+      "usage": {
+        "prompt_tokens": 551,
+        "completion_tokens": 32,
+        "total_tokens": 583
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "security-standard.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "question": "How often must owners review production access?",
+      "answer": "Application owners must review production access every 90 days.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 27.46,
+        "retrieval_db": 11.71,
+        "rerank": 0.17,
+        "generation": 446.19,
+        "total": 485.56,
+        "wall": 488.39
+      },
+      "usage": {
+        "prompt_tokens": 560,
+        "completion_tokens": 38,
+        "total_tokens": 598
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "security-standard.md",
+          "chunk_index": 1
+        },
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": false,
+          "document_name": "security-standard.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "question": "Within how long must a suspected security incident be reported?",
+      "answer": "within 30 minutes",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 37.15,
+        "retrieval_db": 11.26,
+        "rerank": 0.66,
+        "generation": 366.22,
+        "total": 415.31,
+        "wall": 417.88
+      },
+      "usage": {
+        "prompt_tokens": 566,
+        "completion_tokens": 29,
+        "total_tokens": 595
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "security-standard.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "question": "What classification applies to documents with customer identifiers?",
+      "answer": "Documents containing customer identifiers are classified Confidential.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 8.06,
+        "retrieval_db": 8.65,
+        "rerank": 0.14,
+        "generation": 361.24,
+        "total": 378.11,
+        "wall": 380.44
+      },
+      "usage": {
+        "prompt_tokens": 509,
+        "completion_tokens": 31,
+        "total_tokens": 540
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "security-standard.md",
+          "chunk_index": 3
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "question": "On which days are routine production deployments scheduled?",
+      "answer": "Routine production deployments are scheduled on Tuesday and Thursday between 10:00 and 16:00 local time.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 19.16,
+        "retrieval_db": 9.12,
+        "rerank": 0.19,
+        "generation": 578.73,
+        "total": 607.23,
+        "wall": 610.1
+      },
+      "usage": {
+        "prompt_tokens": 584,
+        "completion_tokens": 49,
+        "total_tokens": 633
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "operations-runbook.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "question": "What error-rate condition triggers a rollback?",
+      "answer": "If the error rate exceeds five percent for ten consecutive minutes after a release, the release owner starts rollback.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 9.05,
+        "retrieval_db": 10.6,
+        "rerank": 0.16,
+        "generation": 533.05,
+        "total": 552.89,
+        "wall": 555.31
+      },
+      "usage": {
+        "prompt_tokens": 636,
+        "completion_tokens": 44,
+        "total_tokens": 680
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "operations-runbook.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P11",
+      "question": "When does the primary on-call engineer hand off?",
+      "answer": "The primary on-call engineer hands off at 09:00 every Monday.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 9.01,
+        "retrieval_db": 9.02,
+        "rerank": 0.13,
+        "generation": 537.21,
+        "total": 555.39,
+        "wall": 557.93
+      },
+      "usage": {
+        "prompt_tokens": 636,
+        "completion_tokens": 40,
+        "total_tokens": 676
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "operations-runbook.md",
+          "chunk_index": 1
+        }
+      ]
+    },
+    {
+      "id": "P12",
+      "question": "At what time are PostgreSQL backups checked each morning?",
+      "answer": "PostgreSQL backups are checked every morning at 08:00.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 13.41,
+        "retrieval_db": 8.91,
+        "rerank": 0.13,
+        "generation": 441.82,
+        "total": 464.3,
+        "wall": 466.67
+      },
+      "usage": {
+        "prompt_tokens": 576,
+        "completion_tokens": 38,
+        "total_tokens": 614
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "operations-runbook.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P13",
+      "question": "What purchase amount requires department head and Finance approval?",
+      "answer": "Purchases above 5000 currency units require approval from the department head and Finance before an order is placed.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 8.39,
+        "retrieval_db": 9.0,
+        "rerank": 0.21,
+        "generation": 513.5,
+        "total": 531.14,
+        "wall": 533.95
+      },
+      "usage": {
+        "prompt_tokens": 576,
+        "completion_tokens": 47,
+        "total_tokens": 623
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "procurement-guide.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P14",
+      "question": "What must a supplier processing customer data complete before contract signature?",
+      "answer": "Any supplier that will process customer data must complete a security review before contract signature.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 14.94,
+        "retrieval_db": 11.37,
+        "rerank": 0.2,
+        "generation": 449.82,
+        "total": 476.37,
+        "wall": 479.16
+      },
+      "usage": {
+        "prompt_tokens": 561,
+        "completion_tokens": 39,
+        "total_tokens": 600
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "procurement-guide.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P15",
+      "question": "How long are signed supplier contracts retained after expiry?",
+      "answer": "Signed supplier contracts are stored in the legal repository for seven years after expiry.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 12.39,
+        "retrieval_db": 10.22,
+        "rerank": 0.17,
+        "generation": 471.03,
+        "total": 493.84,
+        "wall": 497.07
+      },
+      "usage": {
+        "prompt_tokens": 516,
+        "completion_tokens": 41,
+        "total_tokens": 557
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "procurement-guide.md",
+          "chunk_index": 1
+        },
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": false,
+          "document_name": "procurement-guide.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P16",
+      "question": "Within how many days must approved business expenses be submitted?",
+      "answer": "Within 45 days of purchase with an itemized receipt.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 11.3,
+        "retrieval_db": 9.4,
+        "rerank": 0.25,
+        "generation": 441.57,
+        "total": 462.54,
+        "wall": 465.87
+      },
+      "usage": {
+        "prompt_tokens": 577,
+        "completion_tokens": 36,
+        "total_tokens": 613
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "procurement-guide.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P17",
+      "question": "What is the first human response target for priority-one support tickets?",
+      "answer": "A support agent confirms the impact and assigns an incident lead before proposing a fix.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 48.87,
+        "retrieval_db": 15.08,
+        "rerank": 0.17,
+        "generation": 495.51,
+        "total": 559.65,
+        "wall": 562.38
+      },
+      "usage": {
+        "prompt_tokens": 562,
+        "completion_tokens": 39,
+        "total_tokens": 601
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "support-playbook.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P18",
+      "question": "When does support escalate an unresolved priority-one issue to engineering?",
+      "answer": "If a priority-one issue remains unresolved after 60 minutes, the support lead escalates to the on-call engineering lead.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 12.59,
+        "retrieval_db": 9.85,
+        "rerank": 0.13,
+        "generation": 528.83,
+        "total": 551.42,
+        "wall": 554.39
+      },
+      "usage": {
+        "prompt_tokens": 625,
+        "completion_tokens": 48,
+        "total_tokens": 673
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "support-playbook.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P19",
+      "question": "How often are customers updated during a priority-one incident?",
+      "answer": "During a priority-one incident, support sends affected customers an update every 30 minutes until mitigation is complete.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 9.9,
+        "retrieval_db": 8.84,
+        "rerank": 0.22,
+        "generation": 500.1,
+        "total": 519.09,
+        "wall": 522.55
+      },
+      "usage": {
+        "prompt_tokens": 566,
+        "completion_tokens": 45,
+        "total_tokens": 611
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "support-playbook.md",
+          "chunk_index": 1
+        }
+      ]
+    },
+    {
+      "id": "P20",
+      "question": "When is the customer satisfaction survey sent after ticket closure?",
+      "answer": "24 hours after a support ticket is closed.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 9.33,
+        "retrieval_db": 7.77,
+        "rerank": 0.2,
+        "generation": 391.14,
+        "total": 408.46,
+        "wall": 411.09
+      },
+      "usage": {
+        "prompt_tokens": 564,
+        "completion_tokens": 33,
+        "total_tokens": 597
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "support-playbook.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "N01",
+      "question": "What is the CEO's private phone number?",
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "timing_ms": {
+        "embedding": 19.75,
+        "retrieval_db": 9.36,
+        "rerank": 0.13,
+        "generation": 412.85,
+        "total": 442.1,
+        "wall": 444.24
+      },
+      "usage": {
+        "prompt_tokens": 626,
+        "completion_tokens": 34,
+        "total_tokens": 660
+      },
+      "citation_checks": []
+    },
+    {
+      "id": "N02",
+      "question": "What is the data retention period for customer call recordings?",
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "timing_ms": {
+        "embedding": 11.73,
+        "retrieval_db": 9.98,
+        "rerank": 0.12,
+        "generation": 406.65,
+        "total": 428.5,
+        "wall": 430.65
+      },
+      "usage": {
+        "prompt_tokens": 563,
+        "completion_tokens": 32,
+        "total_tokens": 595
+      },
+      "citation_checks": []
+    },
+    {
+      "id": "N03",
+      "question": "How many paid holidays do independent contractors receive?",
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "timing_ms": {
+        "embedding": 9.98,
+        "retrieval_db": 11.15,
+        "rerank": 0.12,
+        "generation": 428.88,
+        "total": 450.15,
+        "wall": 452.62
+      },
+      "usage": {
+        "prompt_tokens": 511,
+        "completion_tokens": 35,
+        "total_tokens": 546
+      },
+      "citation_checks": []
+    },
+    {
+      "id": "N04",
+      "question": "What quantum encryption policy applies to personal devices?",
+      "answer": "知识库资料不足，无法回答这个问题。",
+      "abstained": true,
+      "timing_ms": {
+        "embedding": 13.91,
+        "retrieval_db": 10.14,
+        "rerank": 0.15,
+        "generation": 421.92,
+        "total": 446.13,
+        "wall": 448.45
+      },
+      "usage": {
+        "prompt_tokens": 503,
+        "completion_tokens": 37,
+        "total_tokens": 540
+      },
+      "citation_checks": []
+    },
+    {
+      "id": "P01",
+      "question": "How many annual leave days do full-time employees receive?",
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 8.27,
+        "retrieval_db": 9.51,
+        "rerank": 0.2,
+        "generation": 391.51,
+        "total": 409.52,
+        "wall": 411.94
+      },
+      "usage": {
+        "prompt_tokens": 513,
+        "completion_tokens": 39,
+        "total_tokens": 552
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "question": "How long is the probation period for new employees?",
+      "answer": "The probation period for new employees is three months.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 10.71,
+        "retrieval_db": 11.15,
+        "rerank": 0.19,
+        "generation": 387.74,
+        "total": 409.81,
+        "wall": 412.22
+      },
+      "usage": {
+        "prompt_tokens": 512,
+        "completion_tokens": 39,
+        "total_tokens": 551
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 1
+        },
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": false,
+          "document_name": "people-handbook.md",
+          "chunk_index": 2
+        },
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": false,
+          "document_name": "people-handbook.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "question": "How many remote work days per week are allowed after manager approval?",
+      "answer": "After manager approval, employees may work remotely up to two days per week.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 9.13,
+        "retrieval_db": 9.63,
+        "rerank": 0.2,
+        "generation": 393.28,
+        "total": 412.27,
+        "wall": 414.53
+      },
+      "usage": {
+        "prompt_tokens": 517,
+        "completion_tokens": 38,
+        "total_tokens": 555
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 2
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "question": "What is the yearly learning budget for a full-time employee?",
+      "answer": "Each full-time employee has a yearly learning budget of 1200 currency units.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 8.49,
+        "retrieval_db": 9.99,
+        "rerank": 0.17,
+        "generation": 408.12,
+        "total": 426.79,
+        "wall": 429.31
+      },
+      "usage": {
+        "prompt_tokens": 516,
+        "completion_tokens": 41,
+        "total_tokens": 557
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "people-handbook.md",
+          "chunk_index": 3
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "question": "Which account requires multi-factor authentication?",
+      "answer": "The corporate identity account requires multi-factor authentication.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 16.92,
+        "retrieval_db": 10.09,
+        "rerank": 0.21,
+        "generation": 324.03,
+        "total": 351.28,
+        "wall": 354.44
+      },
+      "usage": {
+        "prompt_tokens": 551,
+        "completion_tokens": 32,
+        "total_tokens": 583
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "security-standard.md",
+          "chunk_index": 0
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "question": "How often must owners review production access?",
+      "answer": "Application owners must review production access every 90 days.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding": 14.96,
+        "retrieval_db": 8.95,
+        "rerank": 0.58,
+        "generation": 380.48,
+        "total": 405.01,
+        "wall": 407.94
+      },
+      "usage": {
+        "prompt_tokens": 560,
+        "completion_tokens": 38,
+        "total_tokens": 598
+      },
+      "citation_checks": [
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": true,
+          "document_name": "security-standard.md",
+          "chunk_index": 1
+        },
+        {
+          "real_in_scope": true,
+          "contains_expected_reference": false,
+          "document_name": "security-standard.md",
+          "chunk_index": 2
+        }
+      ]
+    }
+  ],
+  "agent_cases": [
+    {
+      "id": "search_leave",
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 12.28,
+        "retrieval_ms": 2.25,
+        "rerank_ms": 0.16,
+        "initial_chunk_ids": [
+          351,
+          355,
+          352,
+          354,
+          360,
+          362,
+          353,
+          356
+        ],
+        "reranked_chunk_ids": [
+          351,
+          355,
+          352,
+          354
+        ],
+        "llm_ms": 401.61,
+        "total_ms": 1098.74,
+        "wall": 1101.42
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "How many annual leave days do full-time employees receive?"
+          },
+          "latency_ms": 15.1,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_incident",
+      "answer": "within 30 minutes",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 11.5,
+        "retrieval_ms": 1.49,
+        "rerank_ms": 0.17,
+        "initial_chunk_ids": [
+          363,
+          366,
+          362,
+          353,
+          357,
+          356,
+          365,
+          367
+        ],
+        "reranked_chunk_ids": [
+          363,
+          366,
+          356,
+          365
+        ],
+        "llm_ms": 296.09,
+        "total_ms": 983.37,
+        "wall": 986.06
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Within how long must a suspected security incident be reported?"
+          },
+          "latency_ms": 13.44,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_mfa",
+      "answer": "The corporate identity account requires multi-factor authentication.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 22.53,
+        "retrieval_ms": 1.75,
+        "rerank_ms": 0.17,
+        "initial_chunk_ids": [
+          361,
+          362,
+          358,
+          363,
+          353,
+          357,
+          364,
+          356
+        ],
+        "reranked_chunk_ids": [
+          361,
+          362,
+          358,
+          363
+        ],
+        "llm_ms": 320.16,
+        "total_ms": 995.8,
+        "wall": 998.44
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Which account requires multi-factor authentication?"
+          },
+          "latency_ms": 24.87,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "metadata",
+      "answer": "处理状态：ready；chunk 数：4",
+      "abstained": false,
+      "timing_ms": {
+        "llm_ms": 336.86,
+        "total_ms": 854.83,
+        "wall": 857.28
+      },
+      "tool_calls": [
+        {
+          "tool_name": "get_document_metadata",
+          "arguments": {
+            "document_id": "af474b6b-38fc-49cc-9b6a-93b1d786f0b4"
+          },
+          "latency_ms": 0.93,
+          "success": true,
+          "result_count": 1
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_leave",
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 12.2,
+        "retrieval_ms": 1.47,
+        "rerank_ms": 0.21,
+        "initial_chunk_ids": [
+          351,
+          355,
+          352,
+          354,
+          360,
+          362,
+          353,
+          356
+        ],
+        "reranked_chunk_ids": [
+          351,
+          355,
+          352,
+          354
+        ],
+        "llm_ms": 375.25,
+        "total_ms": 1064.61,
+        "wall": 1067.26
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "How many annual leave days do full-time employees receive?"
+          },
+          "latency_ms": 14.17,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_incident",
+      "answer": "within 30 minutes",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 17.89,
+        "retrieval_ms": 2.24,
+        "rerank_ms": 0.17,
+        "initial_chunk_ids": [
+          363,
+          366,
+          362,
+          353,
+          357,
+          356,
+          365,
+          367
+        ],
+        "reranked_chunk_ids": [
+          363,
+          366,
+          356,
+          365
+        ],
+        "llm_ms": 304.62,
+        "total_ms": 1005.4,
+        "wall": 1008.06
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Within how long must a suspected security incident be reported?"
+          },
+          "latency_ms": 20.72,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_mfa",
+      "answer": "The corporate identity account requires multi-factor authentication.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 15.92,
+        "retrieval_ms": 2.0,
+        "rerank_ms": 0.21,
+        "initial_chunk_ids": [
+          361,
+          362,
+          358,
+          363,
+          353,
+          357,
+          364,
+          356
+        ],
+        "reranked_chunk_ids": [
+          361,
+          362,
+          358,
+          363
+        ],
+        "llm_ms": 323.79,
+        "total_ms": 996.03,
+        "wall": 998.04
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Which account requires multi-factor authentication?"
+          },
+          "latency_ms": 18.45,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "metadata",
+      "answer": "处理状态：ready；chunk 数：4",
+      "abstained": false,
+      "timing_ms": {
+        "llm_ms": 307.22,
+        "total_ms": 824.59,
+        "wall": 826.9
+      },
+      "tool_calls": [
+        {
+          "tool_name": "get_document_metadata",
+          "arguments": {
+            "document_id": "af474b6b-38fc-49cc-9b6a-93b1d786f0b4"
+          },
+          "latency_ms": 0.59,
+          "success": true,
+          "result_count": 1
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_leave",
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 13.62,
+        "retrieval_ms": 1.81,
+        "rerank_ms": 0.21,
+        "initial_chunk_ids": [
+          351,
+          355,
+          352,
+          354,
+          360,
+          362,
+          353,
+          356
+        ],
+        "reranked_chunk_ids": [
+          351,
+          355,
+          352,
+          354
+        ],
+        "llm_ms": 378.27,
+        "total_ms": 1070.71,
+        "wall": 1073.22
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "How many annual leave days do full-time employees receive?"
+          },
+          "latency_ms": 15.99,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_incident",
+      "answer": "within 30 minutes",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 10.25,
+        "retrieval_ms": 2.22,
+        "rerank_ms": 0.14,
+        "initial_chunk_ids": [
+          363,
+          366,
+          362,
+          353,
+          357,
+          356,
+          365,
+          367
+        ],
+        "reranked_chunk_ids": [
+          363,
+          366,
+          356,
+          365
+        ],
+        "llm_ms": 292.17,
+        "total_ms": 980.47,
+        "wall": 982.83
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Within how long must a suspected security incident be reported?"
+          },
+          "latency_ms": 12.96,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_mfa",
+      "answer": "The corporate identity account requires multi-factor authentication.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 11.82,
+        "retrieval_ms": 2.13,
+        "rerank_ms": 0.68,
+        "initial_chunk_ids": [
+          361,
+          362,
+          358,
+          363,
+          353,
+          357,
+          364,
+          356
+        ],
+        "reranked_chunk_ids": [
+          361,
+          362,
+          358,
+          363
+        ],
+        "llm_ms": 328.15,
+        "total_ms": 987.59,
+        "wall": 991.52
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Which account requires multi-factor authentication?"
+          },
+          "latency_ms": 15.01,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "metadata",
+      "answer": "处理状态：ready；chunk 数：4",
+      "abstained": false,
+      "timing_ms": {
+        "llm_ms": 314.34,
+        "total_ms": 845.31,
+        "wall": 847.76
+      },
+      "tool_calls": [
+        {
+          "tool_name": "get_document_metadata",
+          "arguments": {
+            "document_id": "af474b6b-38fc-49cc-9b6a-93b1d786f0b4"
+          },
+          "latency_ms": 0.75,
+          "success": true,
+          "result_count": 1
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_leave",
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 14.71,
+        "retrieval_ms": 2.25,
+        "rerank_ms": 0.21,
+        "initial_chunk_ids": [
+          351,
+          355,
+          352,
+          354,
+          360,
+          362,
+          353,
+          356
+        ],
+        "reranked_chunk_ids": [
+          351,
+          355,
+          352,
+          354
+        ],
+        "llm_ms": 388.1,
+        "total_ms": 1080.09,
+        "wall": 1082.53
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "How many annual leave days do full-time employees receive?"
+          },
+          "latency_ms": 17.5,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_incident",
+      "answer": "within 30 minutes",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 11.85,
+        "retrieval_ms": 2.11,
+        "rerank_ms": 0.24,
+        "initial_chunk_ids": [
+          363,
+          366,
+          362,
+          353,
+          357,
+          356,
+          365,
+          367
+        ],
+        "reranked_chunk_ids": [
+          363,
+          366,
+          356,
+          365
+        ],
+        "llm_ms": 290.11,
+        "total_ms": 995.29,
+        "wall": 998.07
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Within how long must a suspected security incident be reported?"
+          },
+          "latency_ms": 14.59,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_mfa",
+      "answer": "The corporate identity account requires multi-factor authentication.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 10.67,
+        "retrieval_ms": 1.39,
+        "rerank_ms": 0.21,
+        "initial_chunk_ids": [
+          361,
+          362,
+          358,
+          363,
+          353,
+          357,
+          364,
+          356
+        ],
+        "reranked_chunk_ids": [
+          361,
+          362,
+          358,
+          363
+        ],
+        "llm_ms": 318.49,
+        "total_ms": 977.98,
+        "wall": 980.19
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Which account requires multi-factor authentication?"
+          },
+          "latency_ms": 12.57,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "metadata",
+      "answer": "处理状态：ready；chunk 数：4",
+      "abstained": false,
+      "timing_ms": {
+        "llm_ms": 308.86,
+        "total_ms": 825.58,
+        "wall": 827.71
+      },
+      "tool_calls": [
+        {
+          "tool_name": "get_document_metadata",
+          "arguments": {
+            "document_id": "af474b6b-38fc-49cc-9b6a-93b1d786f0b4"
+          },
+          "latency_ms": 0.74,
+          "success": true,
+          "result_count": 1
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_leave",
+      "answer": "Full-time employees receive 18 working days of annual leave per calendar year.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 19.29,
+        "retrieval_ms": 1.61,
+        "rerank_ms": 0.16,
+        "initial_chunk_ids": [
+          351,
+          355,
+          352,
+          354,
+          360,
+          362,
+          353,
+          356
+        ],
+        "reranked_chunk_ids": [
+          351,
+          355,
+          352,
+          354
+        ],
+        "llm_ms": 381.5,
+        "total_ms": 1096.39,
+        "wall": 1098.43
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "How many annual leave days do full-time employees receive?"
+          },
+          "latency_ms": 21.37,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_incident",
+      "answer": "within 30 minutes",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 12.4,
+        "retrieval_ms": 2.34,
+        "rerank_ms": 0.24,
+        "initial_chunk_ids": [
+          363,
+          366,
+          362,
+          353,
+          357,
+          356,
+          365,
+          367
+        ],
+        "reranked_chunk_ids": [
+          363,
+          366,
+          356,
+          365
+        ],
+        "llm_ms": 291.58,
+        "total_ms": 979.73,
+        "wall": 982.18
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Within how long must a suspected security incident be reported?"
+          },
+          "latency_ms": 15.28,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "search_mfa",
+      "answer": "The corporate identity account requires multi-factor authentication.",
+      "abstained": false,
+      "timing_ms": {
+        "embedding_ms": 18.21,
+        "retrieval_ms": 2.3,
+        "rerank_ms": 0.16,
+        "initial_chunk_ids": [
+          361,
+          362,
+          358,
+          363,
+          353,
+          357,
+          364,
+          356
+        ],
+        "reranked_chunk_ids": [
+          361,
+          362,
+          358,
+          363
+        ],
+        "llm_ms": 315.2,
+        "total_ms": 988.1,
+        "wall": 991.13
+      },
+      "tool_calls": [
+        {
+          "tool_name": "search_knowledge_base",
+          "arguments": {
+            "knowledge_base_id": "92bf6011-019b-41d6-9a29-7e2c2bee5575",
+            "query": "Which account requires multi-factor authentication?"
+          },
+          "latency_ms": 21.18,
+          "success": true,
+          "result_count": 4
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    },
+    {
+      "id": "metadata",
+      "answer": "处理状态：ready；chunk 数：4",
+      "abstained": false,
+      "timing_ms": {
+        "llm_ms": 315.09,
+        "total_ms": 844.03,
+        "wall": 846.57
+      },
+      "tool_calls": [
+        {
+          "tool_name": "get_document_metadata",
+          "arguments": {
+            "document_id": "af474b6b-38fc-49cc-9b6a-93b1d786f0b4"
+          },
+          "latency_ms": 0.86,
+          "success": true,
+          "result_count": 1
+        }
+      ],
+      "citation_checks": [
+        true
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "name": "support-playbook.md",
+      "chunks": 3
+    },
+    {
+      "name": "security-standard.md",
+      "chunks": 4
+    },
+    {
+      "name": "procurement-guide.md",
+      "chunks": 3
+    },
+    {
+      "name": "people-handbook.md",
+      "chunks": 4
+    },
+    {
+      "name": "operations-runbook.md",
+      "chunks": 3
+    }
+  ],
+  "rag_latency_ms": {
+    "embedding": {
+      "count": 30,
+      "median": 12.06,
+      "p95": 34.96,
+      "p99": 45.47,
+      "min": 8.06,
+      "max": 48.87
+    },
+    "retrieval_db": {
+      "count": 30,
+      "median": 9.89,
+      "p95": 11.93,
+      "p99": 14.22,
+      "min": 6.14,
+      "max": 15.08
+    },
+    "rerank": {
+      "count": 30,
+      "median": 0.17,
+      "p95": 0.44,
+      "p99": 0.64,
+      "min": 0.12,
+      "max": 0.66
+    },
+    "llm_generation": {
+      "count": 30,
+      "median": 422.96,
+      "p95": 535.34,
+      "p99": 566.69,
+      "min": 324.03,
+      "max": 578.73
+    },
+    "total_service": {
+      "count": 30,
+      "median": 448.14,
+      "p95": 557.73,
+      "p99": 593.43,
+      "min": 351.28,
+      "max": 607.23
+    },
+    "wall": {
+      "count": 30,
+      "median": 450.53,
+      "p95": 560.38,
+      "p99": 596.26,
+      "min": 354.44,
+      "max": 610.1
+    }
+  },
+  "agent_latency_ms": {
+    "embedding": {
+      "count": 20,
+      "median": 12.02,
+      "p95": 19.45,
+      "p99": 21.91,
+      "min": 0,
+      "max": 22.53
+    },
+    "retrieval_db": {
+      "count": 20,
+      "median": 1.78,
+      "p95": 2.3,
+      "p99": 2.33,
+      "min": 0,
+      "max": 2.34
+    },
+    "rerank": {
+      "count": 20,
+      "median": 0.17,
+      "p95": 0.26,
+      "p99": 0.6,
+      "min": 0,
+      "max": 0.68
+    },
+    "llm_generation": {
+      "count": 20,
+      "median": 316.85,
+      "p95": 388.78,
+      "p99": 399.04,
+      "min": 290.11,
+      "max": 401.61
+    },
+    "total_service": {
+      "count": 20,
+      "median": 987.85,
+      "p95": 1096.51,
+      "p99": 1098.29,
+      "min": 824.59,
+      "max": 1098.74
+    },
+    "wall": {
+      "count": 20,
+      "median": 991.33,
+      "p95": 1098.58,
+      "p99": 1100.85,
+      "min": 826.9,
+      "max": 1101.42
+    }
+  },
+  "quality": {
+    "rag_citations_real_in_scope": 32,
+    "rag_citation_count": 32,
+    "rag_citations_with_expected_reference": 26,
+    "agent_citations_real_in_scope": 20,
+    "agent_citation_count": 20,
+    "p07_answer_has_quantity_and_unit": [
+      true
+    ],
+    "agent_incident_has_quantity_and_unit": [
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "finished_utc": "2026-09-30T03:48:19.949571+00:00"
+}
